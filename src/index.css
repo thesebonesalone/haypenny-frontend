@@ -11,3 +11,24 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+.floating-overlay {
+  position: absolute;
+  width: 30vw;
+  height: 25vh;
+  left: 33vw;
+  top: 25vh;
+}
+.exit {
+  padding-bottom: 20px;
+  position: absolute;
+  width: 25px;
+  height: 25px;
+  right: 0%;
+  top: 0%;
+}
+
+.react-emoji:hover {
+  transform: scale(1.5);
+  cursor: pointer;
+}
