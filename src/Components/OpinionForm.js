@@ -22,23 +22,20 @@ class OpinionForm extends Component {
       },
     };
     let reqObj = {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(data),
-      };
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(data),
+    };
     fetch(URLIS + "/opinion", reqObj)
-    .then(resp => resp.json())
-    .then(message =>{
-        console.log(message)
+      .then((resp) => resp.json())
+      .then((message) => {
+        console.log(message);
         this.setState({
-            opinion: ''
-        })
-    })
-
-
-
+          opinion: "",
+        });
+      });
   };
   handleOpinion = (e) => {
     this.setState({
@@ -59,7 +56,6 @@ class OpinionForm extends Component {
               onChange={(e) => this.handleOpinion(e)}
             />
           </div>
-
           <input
             type="submit"
             className="btn btn-primary"

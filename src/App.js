@@ -2,10 +2,11 @@ import "./App.css";
 import URLIS from "./Constants/URL";
 import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
 import { Provider } from "react-redux";
-import { createStore } from "redux";
+import { createStore, applyMiddleware, compose } from "redux";
 import Login from "./Components/Login";
 import NavBar from "./Components/NavBar";
 import OpinionContainer from "./Components/OpinionContainer";
+import thunk from 'redux-thunk'
 import React, { Component } from "react";
 
 const reducer = (state = { user: { name: "", id: null } }, action) => {
@@ -18,10 +19,11 @@ const reducer = (state = { user: { name: "", id: null } }, action) => {
       return state;
   }
 };
+
+
+const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 const store = createStore(
-  reducer,
-  [] + window.__REDUX_DEVTOOLS_EXTENSION__ &&
-    window.__REDUX_DEVTOOLS_EXTENSION__()
+  reducer, {user: { name: "", id: null}}, composeEnhancers( applyMiddleware(thunk))
 );
 store.dispatch({ type: "@@INIT" });
 
@@ -33,6 +35,31 @@ class App extends Component {
       mount: null,
     };
   }
+
+  componentDidMount(){
+    const token = localStorage.getItem('my_app_token')
+    if (token) {
+      let reqObj = {
+        method: 'GET',
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      }
+
+      fetch(URLIS + "/current_user",reqObj)
+      .then(resp => resp.json())
+      .then(user => {
+        console.log(user)
+        store.dispatch({ type: "LOGIN", user: user.user})
+      })
+
+
+
+    }
+
+  }
+
+  
   changePopUp() {
     console.log(this.state.popUp);
     let newPopUp = this.state.popUp;

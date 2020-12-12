@@ -37,7 +37,7 @@ class Opinion extends Component {
   }
   handleClick = (e) => {
       console.log(e.target)
-      debugger
+      // debugger
       let data = {user_id: this.props.user.id, opinion_id: this.props.opinion.id, type: e.target.dataset.name}
       let reqObj = {
         method: "POST",

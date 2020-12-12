@@ -1,8 +1,9 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import URLIS from "../Constants/URL";
-import Opinion from './Opinion'
-import Topic from './Topic'
+import Opinion from "./Opinion";
+import Topic from "./Topic";
+import TopicForm from "./TopicForm";
 
 class OpinionContainer extends Component {
   constructor(props) {
@@ -13,10 +14,14 @@ class OpinionContainer extends Component {
       opinionSearch: "",
       topicSearch: "",
       showOpinions: true,
+      opinionPage: 1,
+      topicPage: 1,
+      lastOpinionPage: false,
+      lastTopicPage: true,
     };
   }
   componentDidMount() {
-    fetch(URLIS + "/opinion")
+    fetch(URLIS + `/opinion/feed/new/${this.state.opinionPage}`)
       .then((resp) => resp.json())
       .then((message) => {
         console.log(message);
@@ -51,12 +56,12 @@ class OpinionContainer extends Component {
   };
   renderOpinions() {
     return this.state.filteredOpinions.map((opinion) => {
-      return <Opinion opinion={opinion}/>;
+      return <Opinion opinion={opinion} />;
     });
   }
   renderTopics() {
     return this.state.filteredTopics.map((topic) => {
-      return <Topic topic={topic}/>;
+      return <Topic topic={topic} />;
     });
   }
 
@@ -85,9 +90,10 @@ class OpinionContainer extends Component {
         </form>
         <div className="card">{this.renderOpinions()}</div>
         <div className="card">
-          <h2>You Reached the End!</h2>
           <h3>
-            You've seen every opinion ever had. Do you feel enlightened yet?
+            {this.state.lastOpinionPage
+              ? `You've seen every opinion ever had. Do you feel enlightened yet?`
+              : null}
           </h3>
         </div>
       </React.Fragment>
@@ -96,25 +102,18 @@ class OpinionContainer extends Component {
   holdTopics() {
     return (
       <React.Fragment>
-        <form onSubmit={(e) => this.handleTopicSubmit(e)}>
+        <form>
           <button className="btn">New</button>
           <button className="btn">Popular</button>
           <button className="btn">Weird</button>
-          <input
-            type="text"
-            placeholder="search topics"
-            name="topic_search"
-            value={this.state.topicSearch}
-            onChange={(e) => this.handleChange(e)}
-          />
-          <input type="submit" value="Search" />
         </form>
+        <div>
+          <TopicForm />
+        </div>
         <div className="card">{this.renderTopics()}</div>
         <div className="card">
           <h2>Topics? What Topics?</h2>
-          <h3>
-            There is nothing of interest left to talk about.
-          </h3>
+          <h3>There is nothing of interest left to talk about.</h3>
         </div>
       </React.Fragment>
     );
