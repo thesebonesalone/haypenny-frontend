@@ -18,23 +18,34 @@ class OpinionContainer extends Component {
       topicPage: 1,
       lastOpinionPage: false,
       lastTopicPage: true,
+      loadingOpinions: false,
+      loadingTopics: false,
+      opinionFilter: 'new',
+      topicFilter: 'new'
     };
   }
-  componentDidMount() {
-    fetch(URLIS + `/opinion/feed/new/${this.state.opinionPage}`)
+  loadOpinions(filter) {
+    fetch(URLIS + `/opinion/feed/${filter}/${this.state.opinionPage}`)
       .then((resp) => resp.json())
       .then((message) => {
         console.log(message);
         this.setState({
           filteredOpinions: message.opinions,
+          lastOpinionPage: message.last,
         });
       });
-    fetch(URLIS + "/topic")
+  }
+
+
+  componentDidMount() {
+    this.loadOpinions(this.state.opinionFilter)
+    fetch(URLIS + `/topic/feed/${this.state.topicFilter}/${this.state.topicPage}`)
       .then((resp) => resp.json())
       .then((message) => {
         console.log(message);
         this.setState({
           filteredTopics: message.topics,
+          lastTopicPage: message.last,
         });
       });
   }
@@ -48,20 +59,32 @@ class OpinionContainer extends Component {
         this.setState({
           opinionSearch: e.target.value,
         });
+        break;
       case "topic_search":
         this.setState({
           topicSearch: e.target.value,
         });
+        break;
+      default:
+        return null;
     }
   };
   renderOpinions() {
+    let count = 0
+    if (this.state.filteredOpinions.length !== 0){
     return this.state.filteredOpinions.map((opinion) => {
-      return <Opinion opinion={opinion} />;
-    });
+      count += 1
+      return <Opinion key={count} opinion={opinion} />;
+    })} else
+    {
+      return <h5>Getting some knowledge...</h5>
+    };
   }
   renderTopics() {
+    let count = 0
     return this.state.filteredTopics.map((topic) => {
-      return <Topic topic={topic} />;
+      count += 1
+      return <Topic key={count} topic={topic} />;
     });
   }
 
@@ -72,13 +95,88 @@ class OpinionContainer extends Component {
     });
   }
 
+  handleMoreOpinions(e) {
+    let newOpinionPage = this.state.opinionPage + 1;
+    this.setState({
+      loadingOpinions: true,
+      opinionPage: newOpinionPage,
+    });
+    fetch(URLIS + `/opinion/feed/new/${newOpinionPage}`)
+      .then((resp) => resp.json())
+      .then((message) => {
+        let oldOpinions = this.state.filteredOpinions;
+        this.setState({
+          filteredOpinions: oldOpinions.concat(message.opinions),
+          lastOpinionPage: message.last,
+          loadingOpinions: false,
+        });
+      });
+  }
+
+  handleMoreTopics(e) {
+    console.log("Loading more topics");
+    let newTopicPage = this.state.topicPage + 1;
+    this.setState({
+      loadingTopics: true,
+      topicPage: newTopicPage,
+    });
+    fetch(URLIS + `/topic/feed/new/${newTopicPage}`)
+      .then((resp) => resp.json())
+      .then((message) => {
+        let oldTopics = this.state.filteredTopics;
+        this.setState({
+          filteredTopics: oldTopics.concat(message.topics),
+          lastTopicPage: message.last,
+          loadingTopics: false,
+        });
+      });
+  }
+
+  renderOpinionPageButton() {
+    return (
+      <React.Fragment>
+        <button
+          className="btn btn-primary"
+          onClick={(e) => this.handleMoreOpinions(e)}
+        >
+          Load More
+        </button>
+      </React.Fragment>
+    );
+  }
+
+  renderTopicPageButton() {
+    return (
+      <React.Fragment>
+        <button
+          className="btn btn-primary"
+          onClick={(e) => this.handleMoreTopics(e)}
+        >
+          Load More
+        </button>
+      </React.Fragment>
+    );
+  }
+  handleOpinionChange(e){
+    let name = e.target.name
+    if (name === "new" || name==="popular" || name === "weird"){
+      this.setState({
+        opinionFilter: name,
+        filteredOpinions: [],
+        opinionPage: 1,
+        lastOpinionPage: false
+      })
+      this.loadOpinions(name)
+    }
+  }
+
   holdOpinions() {
     return (
       <React.Fragment>
         <form onSubmit={(e) => this.handleSearchSubmit(e)}>
-          <button className="btn">New</button>
-          <button className="btn">Popular</button>
-          <button className="btn">Weird</button>
+          <button className="btn" name="new" onClick={(e) => this.handleOpinionChange(e)}>New</button>
+          <button className="btn" name="popular" onClick={(e) => this.handleOpinionChange(e)}>Popular</button>
+          <button className="btn" name="weird" onClick={(e) => this.handleOpinionChange(e)}>Weird</button>
           <input
             type="text"
             placeholder="search opinions"
@@ -93,12 +191,23 @@ class OpinionContainer extends Component {
           <h3>
             {this.state.lastOpinionPage
               ? `You've seen every opinion ever had. Do you feel enlightened yet?`
-              : null}
+              : this.renderOpinionPageButton()}
           </h3>
         </div>
       </React.Fragment>
     );
   }
+  renderNewTopic() {
+    let newTopic = [this.props.topic];
+    let oldTopics = this.state.filteredTopics;
+    this.setState({
+      filteredTopics: newTopic.concat(oldTopics),
+    });
+    this.props.dropTopic();
+
+    return <React.Fragment></React.Fragment>;
+  }
+
   holdTopics() {
     return (
       <React.Fragment>
@@ -111,9 +220,13 @@ class OpinionContainer extends Component {
           <TopicForm />
         </div>
         <div className="card">{this.renderTopics()}</div>
+        {this.props.topic ? this.renderNewTopic() : null}
         <div className="card">
-          <h2>Topics? What Topics?</h2>
-          <h3>There is nothing of interest left to talk about.</h3>
+          <h3>
+            {this.state.lastTopicPage
+              ? "There is nothing of interest left to talk about."
+              : this.renderTopicPageButton()}
+          </h3>
         </div>
       </React.Fragment>
     );
@@ -132,11 +245,12 @@ class OpinionContainer extends Component {
 }
 
 const mapStateToProps = (state) => {
-  return { user: state.user };
+  return { user: state.user, topic: state.heldTopic };
 };
 
 const mapDispatchToProps = (dispatch) => {
   return {
+    dropTopic: () => dispatch({ type: "RELEASE_TOPIC" }),
     login: (user) => dispatch({ type: "LOGIN", user: user }),
   };
 };

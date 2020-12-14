@@ -3,39 +3,50 @@ import { connect } from "react-redux";
 import URLIS from "../Constants/URL";
 
 class NavBar extends Component {
+  renderLogin() {
+    return (
+      <button class="btn-primary" onClick={() => this.props.changePopUp()}>
+        Log In
+      </button>
+    );
+  }
 
-    renderLogin() {
-        return (
-            <button class="btn-primary" onClick={() => this.props.changePopUp()}>Log In</button>
-        )
-    }
-    renderProfile() {
-        return (
-            <div>{this.props.user.name}</div>
-        )
-    }
+  handleSignOut(e){
+    console.log("sign out")
+    localStorage.clear()
+    this.props.logout()
 
-    render() {
-        return (
-            <div>
-                {this.props.user.name !== "" ? this.renderProfile()
-                : this.renderLogin() }
-            </div>
+  }
 
-        )
-    }
+  renderProfile() {
+    return (
+      <div className="nav-item">
+        <button className="btn btn-primary nav-item" onClick={(e) => this.handleSignOut(e)}>Sign Out</button>
+        <div className="nav-item">{this.props.user.name}</div>
+      </div>
+    );
+  }
 
-    
+  render() {
+    return (
+      <div>
+        {this.props.user.name !== ""
+          ? this.renderProfile()
+          : this.renderLogin()}
+      </div>
+    );
+  }
 }
 
 const mapStateToProps = (state) => {
-    return { user: state.user };
+  return { user: state.user };
+};
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    login: (user) => dispatch({ type: "LOGIN", user: user }),
+    logout: () => dispatch({ type: "LOGOUT"})
   };
-  
-  const mapDispatchToProps = (dispatch) => {
-    return {
-      login: (user) => dispatch({ type: "LOGIN", user: user }),
-    };
-  };
-  
-  export default connect(mapStateToProps, mapDispatchToProps)(NavBar);
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(NavBar);

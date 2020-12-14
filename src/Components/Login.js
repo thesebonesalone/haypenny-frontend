@@ -18,7 +18,6 @@ class Login extends Component {
 
   handleSubmit = (e) => {
     e.preventDefault();
-    console.log("THIS IS WORKING");
     let data = {
       name: this.state.name.toLowerCase(),
       password: this.state.password,
@@ -37,8 +36,6 @@ class Login extends Component {
         this.props.changePopUp();
         this.props.login(message.user);
       });
-
-    console.log(reqObj);
   };
   handleChange = (e) => {
     switch (e.target.name) {

@@ -1,12 +1,34 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import URLIS from "../Constants/URL";
+import Opinion from "./Opinion";
 class OpinionForm extends Component {
   constructor(props) {
     super(props);
     this.state = {
       opinion: "",
+      opinionOwned: null,
     };
+  }
+
+  loadUserOpinions = () => {
+    fetch(URLIS + `/opinion/view/${this.props.user.id}/${this.props.topic.id}`)
+      .then((resp) => resp.json())
+      .then((opinion) => {
+        console.log(opinion);
+        //debugger
+        this.setState({
+          opinionOwned: opinion.opinion,
+        });
+      });
+    return null;
+  };
+
+  componentDidMount() {
+    if (this.props.user.name !== "") {
+      this.loadUserOpinions();
+    }
+    return null;
   }
   renderLogin() {
     return <div>You must be logged in to leave an Opinion!</div>;
@@ -32,8 +54,14 @@ class OpinionForm extends Component {
       .then((resp) => resp.json())
       .then((message) => {
         console.log(message);
+        let newOpinion = message.opinion
+        newOpinion.topic = this.props.topic.title
+        newOpinion.user = this.props.user.name
+        newOpinion.reactions = []
+        //debugger
         this.setState({
           opinion: "",
+          opinionOwned: newOpinion
         });
       });
   };
@@ -42,15 +70,35 @@ class OpinionForm extends Component {
       opinion: e.target.value,
     });
   };
-  renderForm() {
+
+  checkRenderForm() {
+    if (this.state.opinionOwned) {
+      return (
+        <React.Fragment>
+          <h5>Your Opinion</h5>
+          <Opinion opinion={this.state.opinionOwned} />
+          {(Date.now().valueOf() - Date.parse(this.state.opinionOwned.created_at)) > 172800000 ? this.renderForm("Has your opinion changed?") : "You must wait to change your opinion."}
+          
+        </React.Fragment>
+      );
+    } else {
+      return this.renderForm("What do you think?");
+    }
+  }
+  renderForm(message) {
     return (
       <div>
         <form onSubmit={(e) => this.handleSubmit(e)}>
           <div>
+            <h5>
+              {this.state.opinion.length >= 256
+                ? "Opinion must be 256 characters or less!"
+                : `${256 - this.state.opinion.length} characters left!`}
+            </h5>
             <input
               type="text"
               className="input-group input-group-lg"
-              placeholder="What do you think?"
+              placeholder={message}
               value={this.state.opinion}
               name="opinion"
               onChange={(e) => this.handleOpinion(e)}
@@ -69,7 +117,9 @@ class OpinionForm extends Component {
   render() {
     return (
       <div>
-        {this.props.user.name !== "" ? this.renderForm() : this.renderLogin()}
+        {this.props.user.name !== ""
+          ? this.checkRenderForm()
+          : this.renderLogin()}
       </div>
     );
   }

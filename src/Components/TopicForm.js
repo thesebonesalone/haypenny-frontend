@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import URLIS from "../Constants/URL";
+import { Link } from "react-router-dom";
 
 class TopicForm extends Component {
   constructor(props) {
@@ -15,7 +16,7 @@ class TopicForm extends Component {
   componentDidMount() {
     let query = "";
     this.setState({
-      timer: setTimeout(() => this.grabLikeTopics(query), 3000),
+      timer: setTimeout(() => this.grabLikeTopics(query), 1000),
     });
   }
   handleChange(e) {
@@ -26,14 +27,18 @@ class TopicForm extends Component {
     if (e.target.value !== "") {
       clearTimeout(this.state.timer);
       this.setState({
-        timer: setTimeout(() => this.grabLikeTopics(e.target.value), 3000),
+        timer: setTimeout(() => this.grabLikeTopics(e.target.value), 1000),
       });
     }
   }
 
   renderQueryTopics() {
     return this.state.likeTopics.map((topic) => {
-      return <div>{topic}</div>;
+      return (
+        <div>
+          <Link to={`/topic/${topic}`}>{topic}</Link>
+        </div>
+      );
     });
   }
 
@@ -53,6 +58,7 @@ class TopicForm extends Component {
         .then((resp) => resp.json())
         .then((topic) => {
           console.log(topic);
+          this.props.pushTopic(topic.topic);
         });
     }
   }
@@ -62,7 +68,6 @@ class TopicForm extends Component {
       fetch(URLIS + "/topic/query/liketopics/" + query)
         .then((resp) => resp.json())
         .then((topics) => {
-          console.log(topics);
           let topicArray = topics.topics.map((topic) => topic.title);
           this.setState({
             likeTopics: topicArray,
@@ -107,11 +112,12 @@ class TopicForm extends Component {
 }
 
 const mapStateToProps = (state) => {
-  return { user: state.user };
+  return { user: state.user, heldTopic: state.heldTopic };
 };
 
 const mapDispatchToProps = (dispatch) => {
   return {
+    pushTopic: (topic) => dispatch({ type: "HOLD_TOPIC", topic: topic }),
     login: (user) => dispatch({ type: "LOGIN", user: user }),
   };
 };

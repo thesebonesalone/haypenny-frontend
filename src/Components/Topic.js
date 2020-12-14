@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import OpinionForm from "./OpinionForm";
+import { Link } from "react-router-dom";
 import URLIS from "../Constants/URL";
 
 class Topic extends Component {
@@ -23,14 +24,27 @@ class Topic extends Component {
 
   render() {
     return (
-      <div className="card" style={{margin: '20px'}}>
+      <div className="card" style={{ margin: "20px" }}>
         <div className="card-body">
-          <h4 className="card-title">{this.props.topic.title}</h4>
+          <h4>
+            <Link
+              className="card-title"
+              to={`/topic/${this.props.topic.title}`}
+            >
+              {this.props.topic.title}
+            </Link>
+          </h4>
           <div>
-            <button className="btn btn-primary" style={{margin: '20px'}} onClick={() => this.swapForm()}>
+            <button
+              className="btn btn-primary"
+              style={{ margin: "20px" }}
+              onClick={() => this.swapForm()}
+            >
               {this.state.showForm ? "Nevermind" : "Give an Opinion"}
             </button>
-            <button className="btn btn-primary" style={{margin: '20px'}}>Scope it Out</button>
+            <button className="btn btn-primary" style={{ margin: "20px" }}>
+              Scope it Out
+            </button>
           </div>
           <React.Fragment>
             {this.state.showForm ? this.renderOpinionForm() : null}
