@@ -258,7 +258,7 @@ class Opinion extends Component {
               <div className="card-body">
                 <h5 className="card-title">
                   On the topic of{" "}
-                  <Link to={`/topic/${this.props.opinion.topic}`}>
+                  <Link to={`/topic/${this.props.opinion.topic}`} style={{fontFamily: "Nokio Medium"}}>
                     {this.props.opinion.topic}
                   </Link>
                 </h5>

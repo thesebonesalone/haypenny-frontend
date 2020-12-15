@@ -43,8 +43,8 @@ class TopicForm extends Component {
   }
 
   handleSubmit(e) {
-    e.preventDefault()
-    this.props.didUpdate()
+    e.preventDefault();
+    this.props.didUpdate();
     if (this.state.disabled) {
       console.log("Must be a valid topic");
     } else {
@@ -88,27 +88,43 @@ class TopicForm extends Component {
         });
     }
   }
-  render() {
+
+  renderButton() {
     return (
       <React.Fragment>
-        <form>
-          <input
-            type="text"
-            name="title"
-            placeholder="Create New Topic"
-            value={this.state.title}
-            onChange={(e) => this.handleChange(e)}
-          ></input>
-          <div>{this.renderQueryTopics()}</div>
-        </form>
+        <h4 className="card-title bg-light">This topic does not exist. Would you like to create it?</h4>
         <button
           onClick={(e) => this.handleSubmit(e)}
-          className={`btn ${this.state.disabled ? "disabled" : ""}`}
+          className={`btn btn-primary`}
           value="Create"
         >
           Create
         </button>
       </React.Fragment>
+    );
+  }
+
+  renderQueryLive(){
+    return (
+      <div className="card">
+        <h4 className="card-title bg-light">Topics like the one you searched.</h4>
+        {this.renderQueryTopics()}
+      </div>
+    )
+  }
+  render() {
+    return (
+      <div className="card">
+        <input
+          type="text"
+          name="title"
+          placeholder="Search Topics"
+          value={this.state.title}
+          onChange={(e) => this.handleChange(e)}
+        ></input>
+        {this.state.disabled ? null : this.renderButton()}
+        <div>{this.state.likeTopics.length > 0 ? this.renderQueryLive() : null }</div>
+      </div>
     );
   }
 }

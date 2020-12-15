@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { connect } from "react-redux";
 import URLIS from "../Constants/URL";
 import Opinion from "./Opinion";
+import OpinionForm from "./OpinionForm";
 import Overlay from "react-bootstrap/Overlay";
 import {
   BrowserRouter as Router,
@@ -15,6 +16,7 @@ import {
 function TopicView(props) {
   let { topicTitle } = useParams();
   const [opinions, setOpinions] = useState(0);
+  const [topicId, setTopicId] = useState(0)
   useEffect(() => {
     if (opinions === 0) {
       fetch(URLIS + `/topic/${topicTitle}`)
@@ -22,6 +24,7 @@ function TopicView(props) {
         .then((message) => {
           console.log(message);
           //debugger
+          setTopicId(message.topic.id)
           setOpinions(message.topic.opinions);
         });
     }
@@ -40,6 +43,10 @@ function TopicView(props) {
       <h2 className="card-title" style={{ textAlign: "center" }}>
         {topicTitle}
       </h2>
+      <div className="card-body">
+        <OpinionForm topic={{title: topicTitle, id: topicId}} />
+      </div>
+        <h4 style={{ textAlign: "center" }}>{opinions !== 0 ? "All Opinions": null}</h4>
       <div className="card-body">{renderOpinions()}</div>
     </div>
   );

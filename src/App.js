@@ -11,6 +11,7 @@ import TopicRouter from "./Components/TopicRouter";
 import UserRouter from './Components/UserRouter'
 import React, { Component } from "react";
 import MediaQuery from "react-responsive";
+import logo from './assets/logo_transparent_background.png'
 
 const reducer = (
   state = { heldTopic: null, user: { name: "", id: null } },
@@ -85,13 +86,13 @@ class App extends Component {
         <Provider store={store}>
           <div className="navbar navbar-light bg-dark">
             <MediaQuery maxDeviceWidth={1824} minDeviceWidth={1224}>
-              <Link to="/" class="navbar-haypenny display-3" href="#">
-                HayPenny
+              <Link to="/" class="navbar-haypenny" href="#">
+                <img className="img-fluid" src={logo}/>
               </Link>
             </MediaQuery>
             <MediaQuery minDeviceWidth={1224} device={{ deviceWidth: 1600}}>
-              <Link to="/" class="navbar-haypenny display-4" href="#">
-                HayPenny
+              <Link to="/" class="navbar-haypenny" href="#">
+              <img className="img-fluid" src={logo}/>
               </Link>
             </MediaQuery>
             <NavBar changePopUp={() => this.changePopUp()}></NavBar>

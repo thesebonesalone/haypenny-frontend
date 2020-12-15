@@ -212,56 +212,58 @@ class OpinionContainer extends Component {
         }
       }
     }
-
   }
 
-  componentWillMount(){
+  componentWillMount() {
     //debugger
     let OpinionContainer = this;
 
-    window.addEventListener("scroll", () => OpinionContainer.windowScrollListener(), true);
+    window.addEventListener(
+      "scroll",
+      () => OpinionContainer.windowScrollListener(),
+      true
+    );
   }
 
   componentWillUnmount() {
     let OpinionContainer = this;
-    window.removeEventListener("scroll", () => OpinionContainer.windowScrollListener(), true);
+    window.removeEventListener(
+      "scroll",
+      () => OpinionContainer.windowScrollListener(),
+      true
+    );
   }
 
   holdOpinions() {
     return (
       <React.Fragment>
         <form onSubmit={(e) => this.handleSearchSubmit(e)}>
+          <button className="btn btn-primary" onClick={() => this.swap()}>
+            {this.state.showOpinions ? "Topics" : "Opinions"}
+          </button>
           <button
-            className="btn"
+            className="btn btn-secondary"
             name="new"
             onClick={(e) => this.handleOpinionChange(e)}
           >
             New
           </button>
           <button
-            className="btn"
+            className="btn btn-secondary"
             name="popular"
             onClick={(e) => this.handleOpinionChange(e)}
           >
             Popular
           </button>
           <button
-            className="btn"
+            className="btn btn-secondary"
             name="weird"
             onClick={(e) => this.handleOpinionChange(e)}
           >
             Weird
           </button>
-          <input
-            type="text"
-            placeholder="search opinions"
-            name="opinion_search"
-            value={this.state.opinionSearch}
-            onChange={(e) => this.handleChange(e)}
-          />
-          <input type="submit" value="Search" />
         </form>
-        <div className="card">{this.renderOpinions()}</div>
+        <div className="card bg-light">{this.renderOpinions()}</div>
         <div className="card">
           <h3>
             {this.state.lastOpinionPage
@@ -289,14 +291,15 @@ class OpinionContainer extends Component {
     return (
       <React.Fragment>
         <form onSubmit={(e) => this.cancelSubmit(e)}>
-          <button className="btn">New</button>
-          <button className="btn">Popular</button>
-          <div>
-            <TopicForm didUpdate={() => this.topicFormDidSubmit()} />
-          </div>
+          <button className="btn btn-primary" onClick={() => this.swap()}>
+            {this.state.showOpinions ? "Topics" : "Opinions"}
+          </button>
+          <button className="btn btn-secondary">New</button>
+          <button className="btn btn-secondary">Popular</button>
+          <TopicForm didUpdate={() => this.topicFormDidSubmit()} />
         </form>
 
-        <div className="card">{this.renderTopics()}</div>
+        <div className="card bg-light">{this.renderTopics()}</div>
         {this.props.topic ? this.renderNewTopic() : null}
         <div className="card">
           <h3>
@@ -311,10 +314,7 @@ class OpinionContainer extends Component {
 
   render() {
     return (
-      <div className="container-fluid">
-        <button className="btn btn-primary" onClick={() => this.swap()}>
-          {this.state.showOpinions ? "Show Topics" : "Show Opinions"}
-        </button>
+      <div className="container-fluid bg-standard">
         {this.state.showOpinions ? this.holdOpinions() : this.holdTopics()}
       </div>
     );

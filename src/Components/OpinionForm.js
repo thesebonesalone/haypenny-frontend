@@ -30,6 +30,14 @@ class OpinionForm extends Component {
     }
     return null;
   }
+
+  componentDidUpdate(prevProps) {
+    if (this.props.topic.id !== prevProps.topic.id){
+    if (this.props.user.name !== "") {
+      this.loadUserOpinions();
+    }
+    return null;
+  }}
   renderLogin() {
     return <div>You must be logged in to leave an Opinion!</div>;
   }
