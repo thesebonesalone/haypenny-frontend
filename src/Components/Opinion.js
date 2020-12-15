@@ -254,7 +254,7 @@ class Opinion extends Component {
       <div className="card" style={{ margin: "20px" }}>
         <div className="container-fluid">
           <div className="row">
-            <div className="col-12 col-md-8">
+            <div className="col-xl-8">
               <div className="card-body">
                 <h5 className="card-title">
                   On the topic of{" "}
@@ -273,12 +273,11 @@ class Opinion extends Component {
                 </div>
               </div>
             </div>
-            <div className="col-6 col-md-4">
-              <div className="card">
+            <div className="col-sm-4">
                 <div className="card-body">
                   <h6 className="card-title">Reactions</h6>
                   <div className="card-text reaction-box">{this.renderReactionsTally()}</div>
-                </div>
+                
               </div>
             </div>
           </div>

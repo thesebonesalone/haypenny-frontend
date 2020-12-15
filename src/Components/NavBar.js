@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import URLIS from "../Constants/URL";
+import { Link } from 'react-router-dom'
 
 class NavBar extends Component {
   renderLogin() {
@@ -22,7 +23,7 @@ class NavBar extends Component {
     return (
       <div className="nav-item">
         <button className="btn btn-primary nav-item" onClick={(e) => this.handleSignOut(e)}>Sign Out</button>
-        <div className="nav-item">{this.props.user.name}</div>
+        <Link to={`/user/${this.props.user.name}`} className="nav-item">{this.props.user.name}</Link>
       </div>
     );
   }

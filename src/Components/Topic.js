@@ -19,7 +19,14 @@ class Topic extends Component {
   }
 
   renderOpinionForm() {
-    return <OpinionForm topic={this.props.topic} />;
+    return <div>{this.props.doUpdate ? null : <OpinionForm topic={this.props.topic} />}</div>;
+  }
+  componentDidUpdate() {
+    if (this.props.doUpdate === true){
+      this.setState({
+        showForm: false
+      })
+    }
   }
 
   render() {
@@ -41,9 +48,6 @@ class Topic extends Component {
               onClick={() => this.swapForm()}
             >
               {this.state.showForm ? "Nevermind" : "Give an Opinion"}
-            </button>
-            <button className="btn btn-primary" style={{ margin: "20px" }}>
-              Scope it Out
             </button>
           </div>
           <React.Fragment>

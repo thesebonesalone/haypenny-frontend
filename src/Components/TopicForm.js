@@ -43,6 +43,8 @@ class TopicForm extends Component {
   }
 
   handleSubmit(e) {
+    e.preventDefault()
+    this.props.didUpdate()
     if (this.state.disabled) {
       console.log("Must be a valid topic");
     } else {

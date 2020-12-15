@@ -37,7 +37,9 @@ function UserView(props) {
   }
   return (
     <div className="card">
-      <h2 className="card-title" style={{textAlign: 'center'}}>{userName}</h2>
+      <h2 className="card-title" style={{ textAlign: "center" }}>
+        {userName}
+      </h2>
       <div className="card-body">{renderOpinions()}</div>
     </div>
   );

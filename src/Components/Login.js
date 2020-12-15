@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import URLIS from "../Constants/URL";
+import MediaQuery from "react-responsive";
 
 class Login extends Component {
   constructor(props) {
@@ -32,7 +33,7 @@ class Login extends Component {
     fetch(URLIS + "/auth", reqObj)
       .then((resp) => resp.json())
       .then((message) => {
-        localStorage.setItem('my_app_token', message.token)
+        localStorage.setItem("my_app_token", message.token);
         this.props.changePopUp();
         this.props.login(message.user);
       });
@@ -102,7 +103,7 @@ class Login extends Component {
                 />
               </div>
             </div>
-            <div className="row" style={{margin: "20px"}}>
+            <div className="row" style={{ margin: "20px" }}>
               <div className="col" style={{ textAlign: "center" }}>
                 <input
                   style={{ width: "75%" }}
@@ -195,7 +196,7 @@ class Login extends Component {
                 />
               </div>
             </div>
-            <div className="row" style={{margin: "20px"}}>
+            <div className="row" style={{ margin: "20px" }}>
               <div className="col" style={{ textAlign: "center" }}>
                 <input
                   style={{ width: "75%" }}
@@ -213,18 +214,36 @@ class Login extends Component {
 
   render() {
     return (
-      <div className="floating-overlay card">
-        <button
-          className="btn-danger exit"
-          onClick={() => this.props.changePopUp()}
-        >
-          X
-        </button>
-        {this.state.login ? this.renderLogin() : this.renderSignUp()}
-        <button className="btn-primary" onClick={(e) => this.handleSwap()}>
-          {this.state.login ? "sign up" : "login"}
-        </button>
-      </div>
+      <React.Fragment>
+        <MediaQuery minDeviceWidth={1224} device={{ deviceWidth: 1600 }}>
+          <div className="overlay card">
+            <button
+              className="btn-danger exit"
+              onClick={() => this.props.changePopUp()}
+            >
+              X
+            </button>
+            {this.state.login ? this.renderLogin() : this.renderSignUp()}
+            <button className="btn-primary" onClick={(e) => this.handleSwap()}>
+              {this.state.login ? "sign up" : "login"}
+            </button>
+          </div>
+        </MediaQuery>
+        <MediaQuery maxDeviceWidth={1824} minDeviceWidth={1224}>
+          <div className="floating-overlay card">
+            <button
+              className="btn-danger exit"
+              onClick={() => this.props.changePopUp()}
+            >
+              X
+            </button>
+            {this.state.login ? this.renderLogin() : this.renderSignUp()}
+            <button className="btn-primary" onClick={(e) => this.handleSwap()}>
+              {this.state.login ? "sign up" : "login"}
+            </button>
+          </div>
+        </MediaQuery>
+      </React.Fragment>
     );
   }
 }

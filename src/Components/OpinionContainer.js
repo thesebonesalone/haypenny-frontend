@@ -20,10 +20,26 @@ class OpinionContainer extends Component {
       lastTopicPage: true,
       loadingOpinions: false,
       loadingTopics: false,
-      opinionFilter: 'new',
-      topicFilter: 'new'
+      opinionFilter: "new",
+      topicFilter: "new",
+      topicFormUpdate: false,
     };
   }
+
+  topicFormDidSubmit() {
+    console.log("Testing Prop.");
+    this.setState({
+      topicFormDidSubmit: true,
+      topicFilter: "new",
+      loadingTopics: true,
+      topicPage: 1,
+      lastTopicPage: false,
+      filteredTopics: [],
+    });
+    this.loadTopics(this.state.topicFilter);
+    setTimeout(() => this.formDoneUpdating(), 200);
+  }
+
   loadOpinions(filter) {
     fetch(URLIS + `/opinion/feed/${filter}/${this.state.opinionPage}`)
       .then((resp) => resp.json())
@@ -35,11 +51,8 @@ class OpinionContainer extends Component {
         });
       });
   }
-
-
-  componentDidMount() {
-    this.loadOpinions(this.state.opinionFilter)
-    fetch(URLIS + `/topic/feed/${this.state.topicFilter}/${this.state.topicPage}`)
+  loadTopics(filter) {
+    fetch(URLIS + `/topic/feed/${filter}/${this.state.topicPage}`)
       .then((resp) => resp.json())
       .then((message) => {
         console.log(message);
@@ -48,6 +61,11 @@ class OpinionContainer extends Component {
           lastTopicPage: message.last,
         });
       });
+  }
+
+  componentDidMount() {
+    this.loadOpinions(this.state.opinionFilter);
+    this.loadTopics(this.state.topicFilter);
   }
   handleSearchSubmit = (e) => {
     e.preventDefault();
@@ -69,22 +87,34 @@ class OpinionContainer extends Component {
         return null;
     }
   };
+
+  formDoneUpdating() {
+    this.setState({
+      topicFormDidSubmit: false,
+    });
+  }
   renderOpinions() {
-    let count = 0
-    if (this.state.filteredOpinions.length !== 0){
-    return this.state.filteredOpinions.map((opinion) => {
-      count += 1
-      return <Opinion key={count} opinion={opinion} />;
-    })} else
-    {
-      return <h5>Getting some knowledge...</h5>
-    };
+    let count = 0;
+    if (this.state.filteredOpinions.length !== 0) {
+      return this.state.filteredOpinions.map((opinion) => {
+        count += 1;
+        return <Opinion key={count} opinion={opinion} />;
+      });
+    } else {
+      return <h5>Getting some knowledge...</h5>;
+    }
   }
   renderTopics() {
-    let count = 0
+    let count = 0;
     return this.state.filteredTopics.map((topic) => {
-      count += 1
-      return <Topic key={count} topic={topic} />;
+      count += 1;
+      return (
+        <Topic
+          doUpdate={this.state.topicFormUpdate}
+          key={count}
+          topic={topic}
+        />
+      );
     });
   }
 
@@ -157,26 +187,66 @@ class OpinionContainer extends Component {
       </React.Fragment>
     );
   }
-  handleOpinionChange(e){
-    let name = e.target.name
-    if (name === "new" || name==="popular" || name === "weird"){
+  handleOpinionChange(e) {
+    let name = e.target.name;
+    if (name === "new" || name === "popular" || name === "weird") {
       this.setState({
         opinionFilter: name,
         filteredOpinions: [],
         opinionPage: 1,
-        lastOpinionPage: false
-      })
-      this.loadOpinions(name)
+        lastOpinionPage: false,
+      });
+      this.loadOpinions(name);
     }
+  }
+  componentWillMount() {
+    //debugger
+    let OpinionContainer = this;
+    window.addEventListener("scroll", function () {
+      if (window.innerHeight + window.scrollY >= document.body.offsetHeight) {
+        //debugger
+        if (OpinionContainer.state.showOpinions) {
+          if (!OpinionContainer.state.lastOpinionPage) {
+            OpinionContainer.handleMoreOpinions();
+          }
+        } else {
+          if (!OpinionContainer.state.lastTopicPage) {
+            OpinionContainer.handleMoreTopics();
+          }
+        }
+      }
+    });
+  }
+
+  componentWillUnmount() {
+    window.removeEventListener("scroll");
   }
 
   holdOpinions() {
     return (
       <React.Fragment>
         <form onSubmit={(e) => this.handleSearchSubmit(e)}>
-          <button className="btn" name="new" onClick={(e) => this.handleOpinionChange(e)}>New</button>
-          <button className="btn" name="popular" onClick={(e) => this.handleOpinionChange(e)}>Popular</button>
-          <button className="btn" name="weird" onClick={(e) => this.handleOpinionChange(e)}>Weird</button>
+          <button
+            className="btn"
+            name="new"
+            onClick={(e) => this.handleOpinionChange(e)}
+          >
+            New
+          </button>
+          <button
+            className="btn"
+            name="popular"
+            onClick={(e) => this.handleOpinionChange(e)}
+          >
+            Popular
+          </button>
+          <button
+            className="btn"
+            name="weird"
+            onClick={(e) => this.handleOpinionChange(e)}
+          >
+            Weird
+          </button>
           <input
             type="text"
             placeholder="search opinions"
@@ -207,18 +277,20 @@ class OpinionContainer extends Component {
 
     return <React.Fragment></React.Fragment>;
   }
-
+  cancelSubmit(e) {
+    e.preventDefault();
+  }
   holdTopics() {
     return (
       <React.Fragment>
-        <form>
+        <form onSubmit={(e) => this.cancelSubmit(e)}>
           <button className="btn">New</button>
           <button className="btn">Popular</button>
-          <button className="btn">Weird</button>
+          <div>
+            <TopicForm didUpdate={() => this.topicFormDidSubmit()} />
+          </div>
         </form>
-        <div>
-          <TopicForm />
-        </div>
+
         <div className="card">{this.renderTopics()}</div>
         {this.props.topic ? this.renderNewTopic() : null}
         <div className="card">

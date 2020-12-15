@@ -10,6 +10,7 @@ import thunk from "redux-thunk";
 import TopicRouter from "./Components/TopicRouter";
 import UserRouter from './Components/UserRouter'
 import React, { Component } from "react";
+import MediaQuery from "react-responsive";
 
 const reducer = (
   state = { heldTopic: null, user: { name: "", id: null } },
@@ -82,10 +83,17 @@ class App extends Component {
     return (
       <Router>
         <Provider store={store}>
-          <div className="navbar navbar-light bg-light">
-            <Link to="/" class="navbar-brand" href="#">
-              HayPenny
-            </Link>
+          <div className="navbar navbar-light bg-dark">
+            <MediaQuery maxDeviceWidth={1824} minDeviceWidth={1224}>
+              <Link to="/" class="navbar-haypenny display-3" href="#">
+                HayPenny
+              </Link>
+            </MediaQuery>
+            <MediaQuery minDeviceWidth={1224} device={{ deviceWidth: 1600}}>
+              <Link to="/" class="navbar-haypenny display-4" href="#">
+                HayPenny
+              </Link>
+            </MediaQuery>
             <NavBar changePopUp={() => this.changePopUp()}></NavBar>
           </div>
 
