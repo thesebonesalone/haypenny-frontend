@@ -199,27 +199,32 @@ class OpinionContainer extends Component {
       this.loadOpinions(name);
     }
   }
-  componentWillMount() {
-    //debugger
-    let OpinionContainer = this;
-    window.addEventListener("scroll", function () {
-      if (window.innerHeight + window.scrollY >= document.body.offsetHeight) {
-        //debugger
-        if (OpinionContainer.state.showOpinions) {
-          if (!OpinionContainer.state.lastOpinionPage) {
-            OpinionContainer.handleMoreOpinions();
-          }
-        } else {
-          if (!OpinionContainer.state.lastTopicPage) {
-            OpinionContainer.handleMoreTopics();
-          }
+  windowScrollListener() {
+    if (window.innerHeight + window.scrollY >= document.body.offsetHeight) {
+      //debugger
+      if (this.state.showOpinions) {
+        if (!this.state.lastOpinionPage) {
+          this.handleMoreOpinions();
+        }
+      } else {
+        if (!this.state.lastTopicPage) {
+          this.handleMoreTopics();
         }
       }
-    });
+    }
+
+  }
+
+  componentWillMount(){
+    //debugger
+    let OpinionContainer = this;
+
+    window.addEventListener("scroll", () => OpinionContainer.windowScrollListener(), true);
   }
 
   componentWillUnmount() {
-    window.removeEventListener("scroll");
+    let OpinionContainer = this;
+    window.removeEventListener("scroll", () => OpinionContainer.windowScrollListener(), true);
   }
 
   holdOpinions() {
