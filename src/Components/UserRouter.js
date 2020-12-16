@@ -17,7 +17,7 @@ function UserRouter(props) {
     return (
         <div>
             <Switch>
-                <Route path={`${match.path}/:userName`}>
+                <Route exact path={`${match.path}/:userName`}>
                     <UserView/>
                 </Route>
             </Switch>

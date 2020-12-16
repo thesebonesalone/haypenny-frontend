@@ -27,6 +27,16 @@ h3 {
 h4{
   font-family: 'Nokio Medium';
 }
+h5{
+  font-family: 'Nokio Medium';
+}
+h6{
+  font-family: 'Nokio Medium';
+}
+
+.btn-small {
+  font-size: 0.75rem;
+}
 .nav-item-2 {
   font-family: 'Nokio Medium';
 }
@@ -73,7 +83,10 @@ a {
   margin: 0.05%;
 }
 .img-fluid{
-  max-height: 300px;
+  max-height: 150px;
+}
+.img-icon{
+  height: 50px;
 }
 
 
@@ -85,7 +98,6 @@ a:hover {
 }
 .navbar-haypenny {
   color: #E3A473;
-  font-family:'Courier New', Courier, monospace
 }
 
 html {

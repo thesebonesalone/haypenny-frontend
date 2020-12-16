@@ -1,30 +1,39 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import URLIS from "../Constants/URL";
-import { Link } from 'react-router-dom'
-
+import { Link } from "react-router-dom";
 
 class NavBar extends Component {
   renderLogin() {
     return (
+      <div className="navbar-item float-md-right">
       <button class="btn-primary" onClick={() => this.props.changePopUp()}>
         Log In
       </button>
+      </div>
     );
   }
 
-  handleSignOut(e){
-    console.log("sign out")
-    localStorage.clear()
-    this.props.logout()
-
+  handleSignOut(e) {
+    console.log("sign out");
+    localStorage.clear();
+    this.props.logout();
   }
 
   renderProfile() {
     return (
-      <div className="nav-item">
-        <button className="btn btn-primary nav-item" onClick={(e) => this.handleSignOut(e)}>Sign Out</button>
-        <Link to={`/user/${this.props.user.name}`} className="nav-item-2">{this.props.user.name}</Link>
+      <div className="navbar-item float-md-right">
+        <h6>
+          <Link to={`/user/${this.props.user.name}`} >
+            {this.props.user.name}
+          </Link>
+        </h6>
+        <button
+          className="navbar-item btn btn-primary btn-small"
+          onClick={(e) => this.handleSignOut(e)}
+        >
+          Sign Out
+        </button>
       </div>
     );
   }
@@ -47,7 +56,7 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
   return {
     login: (user) => dispatch({ type: "LOGIN", user: user }),
-    logout: () => dispatch({ type: "LOGOUT"})
+    logout: () => dispatch({ type: "LOGOUT" }),
   };
 };
 

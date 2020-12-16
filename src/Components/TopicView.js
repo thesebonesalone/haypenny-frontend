@@ -40,7 +40,7 @@ function TopicView(props) {
   }
   return (
     <div className="card">
-      <h2 className="card-title" style={{ textAlign: "center" }}>
+      <h2 className="card-title" style={{ textAlign: "center" , paddingTop: "20px"}}>
         {topicTitle}
       </h2>
       <div className="card-body">

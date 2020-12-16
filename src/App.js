@@ -8,10 +8,10 @@ import NavBar from "./Components/NavBar";
 import OpinionContainer from "./Components/OpinionContainer";
 import thunk from "redux-thunk";
 import TopicRouter from "./Components/TopicRouter";
-import UserRouter from './Components/UserRouter'
+import UserRouter from "./Components/UserRouter";
 import React, { Component } from "react";
 import MediaQuery from "react-responsive";
-import logo from './assets/logo_transparent_background.png'
+import logo from "./assets/logo_transparent_background.png";
 
 const reducer = (
   state = { heldTopic: null, user: { name: "", id: null } },
@@ -85,22 +85,25 @@ class App extends Component {
       <Router>
         <Provider store={store}>
           <div className="navbar navbar-light bg-dark">
-            <MediaQuery maxDeviceWidth={1824} minDeviceWidth={1224}>
+            <MediaQuery maxDeviceWidth={764}>
               <Link to="/" class="navbar-haypenny" href="#">
-                <img className="img-fluid" src={logo}/>
+                <img className="img-icon" src={logo} />
               </Link>
+              <NavBar changePopUp={() => this.changePopUp()}></NavBar>
             </MediaQuery>
-            <MediaQuery minDeviceWidth={1224} device={{ deviceWidth: 1600}}>
-              <Link to="/" class="navbar-haypenny" href="#">
-              <img className="img-fluid" src={logo}/>
-              </Link>
+            <MediaQuery minDeviceWidth={765}>
+              <div style={{ textAlign: "center" }}>
+                <Link to="/" class="navbar-haypenny" href="#">
+                  <img className="img-fluid" src={logo} />
+                </Link>
+              </div>
+              <NavBar changePopUp={() => this.changePopUp()} />
             </MediaQuery>
-            <NavBar changePopUp={() => this.changePopUp()}></NavBar>
           </div>
 
           <div className="container">
             <Switch>
-              <Route path="/topic">
+              <Route exact path="/topic">
                 <TopicRouter />
               </Route>
               <Route path="/user">
@@ -109,7 +112,6 @@ class App extends Component {
               <Route path="/">
                 <OpinionContainer />
               </Route>
-              
             </Switch>
           </div>
           {this.state.popUp ? (
