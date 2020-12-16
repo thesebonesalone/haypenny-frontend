@@ -105,7 +105,7 @@ class App extends Component {
 
           <div className="container" style={{paddingTop: '200px'}}>
             <Switch>
-              <Route exact path="/topic">
+              <Route path="/topic">
                 <TopicRouter />
               </Route>
               <Route path="/user">

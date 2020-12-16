@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { connect } from "react-redux";
 import URLIS from "../Constants/URL";
 import Opinion from "./Opinion";
@@ -11,14 +11,18 @@ import {
   Link,
   useRouteMatch,
   useParams,
+  useLocation,
 } from "react-router-dom";
 
 function TopicView(props) {
+  const location = useLocation()
   let { topicTitle } = useParams();
+  const prevLocation = usePrevious(location)
   const [opinions, setOpinions] = useState(0);
   const [topicId, setTopicId] = useState(0)
+  const [page, setPage] = useState(1)
   useEffect(() => {
-    if (opinions === 0) {
+    if (opinions === 0 || location !== prevLocation) {
       fetch(URLIS + `/topic/${topicTitle}`)
         .then((resp) => resp.json())
         .then((message) => {
@@ -50,6 +54,15 @@ function TopicView(props) {
       <div className="card-body">{renderOpinions()}</div>
     </div>
   );
+}
+function usePrevious(value) {
+  const ref = useRef()
+
+  useEffect(() => {
+    ref.current = value
+  }, [value])
+
+  return ref.current
 }
 
 const mapStateToProps = (state) => {
