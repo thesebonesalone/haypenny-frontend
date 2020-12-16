@@ -84,24 +84,26 @@ class App extends Component {
     return (
       <Router>
         <Provider store={store}>
-          <div className="navbar navbar-light bg-dark">
-            <MediaQuery maxDeviceWidth={764}>
-              <Link to="/" class="navbar-haypenny" href="#">
-                <img className="img-icon" src={logo} />
-              </Link>
-              <NavBar changePopUp={() => this.changePopUp()}></NavBar>
-            </MediaQuery>
-            <MediaQuery minDeviceWidth={765}>
-              <div style={{ textAlign: "center" }}>
+          <div className="navbar navbar-default bg-dark navbar-fixed-top" style={{position: 'fixed', width: '100%', zIndex: '10'}}>
+            <div className="container">
+              <MediaQuery maxDeviceWidth={764}>
                 <Link to="/" class="navbar-haypenny" href="#">
-                  <img className="img-fluid" src={logo} />
+                  <img className="img-icon" src={logo} />
                 </Link>
-              </div>
-              <NavBar changePopUp={() => this.changePopUp()} />
-            </MediaQuery>
+                <NavBar changePopUp={() => this.changePopUp()}></NavBar>
+              </MediaQuery>
+              <MediaQuery minDeviceWidth={765}>
+                <div style={{ textAlign: "center" }}>
+                  <Link to="/" class="navbar-haypenny" href="#">
+                    <img className="img-fluid" src={logo} />
+                  </Link>
+                </div>
+                <NavBar changePopUp={() => this.changePopUp()} />
+              </MediaQuery>
+            </div>
           </div>
 
-          <div className="container">
+          <div className="container" style={{paddingTop: '200px'}}>
             <Switch>
               <Route exact path="/topic">
                 <TopicRouter />
