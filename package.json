@@ -14,6 +14,7 @@
     "react-responsive": "^8.2.0",
     "react-router-dom": "^5.2.0",
     "react-scripts": "4.0.1",
+    "react-wordcloud": "^1.2.7",
     "redux": "^4.0.5",
     "redux-thunk": "^2.3.0",
     "thunk": "^0.0.1",

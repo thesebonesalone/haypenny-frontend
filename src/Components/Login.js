@@ -215,7 +215,7 @@ class Login extends Component {
   render() {
     return (
       <React.Fragment>
-        <MediaQuery minDeviceWidth={1224} device={{ deviceWidth: 1600 }}>
+        <MediaQuery maxDeviceWidth={764}>
           <div className="overlay card">
             <button
               className="btn-danger exit"
@@ -229,7 +229,7 @@ class Login extends Component {
             </button>
           </div>
         </MediaQuery>
-        <MediaQuery maxDeviceWidth={1824} minDeviceWidth={1224}>
+        <MediaQuery minDeviceWidth={765}>
           <div className="floating-overlay card">
             <button
               className="btn-danger exit"

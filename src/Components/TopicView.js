@@ -26,7 +26,6 @@ function TopicView(props) {
       fetch(URLIS + `/topic/${topicTitle}`)
         .then((resp) => resp.json())
         .then((message) => {
-          console.log(message);
           //debugger
           setTopicId(message.topic.id)
           setOpinions(message.topic.opinions);
