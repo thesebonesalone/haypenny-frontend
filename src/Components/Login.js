@@ -33,9 +33,12 @@ class Login extends Component {
     fetch(URLIS + "/auth", reqObj)
       .then((resp) => resp.json())
       .then((message) => {
+        if (message.message === "Success"){
         localStorage.setItem("my_app_token", message.token);
         this.props.changePopUp();
-        this.props.login(message.user);
+        this.props.login(message.user);} else {
+          alert(message.error)
+        }
       });
   };
   handleChange = (e) => {
