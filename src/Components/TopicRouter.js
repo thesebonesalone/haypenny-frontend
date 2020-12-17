@@ -1,15 +1,11 @@
-import React, { Component } from "react";
+import React from "react";
 import { connect } from "react-redux";
 import {
-  BrowserRouter as Router,
   Switch,
   Route,
-  Link,
   useRouteMatch,
-  useParams
 } from 'react-router-dom'
 import TopicView from './TopicView'
-import URLIS from "../Constants/URL";
 
 
 function TopicRouter(props) {

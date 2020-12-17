@@ -3,16 +3,7 @@ import { connect } from "react-redux";
 import URLIS from "../Constants/URL";
 import Opinion from "./Opinion";
 import OpinionForm from "./OpinionForm";
-import Overlay from "react-bootstrap/Overlay";
-import {
-  BrowserRouter as Router,
-  Switch,
-  Route,
-  Link,
-  useRouteMatch,
-  useParams,
-  useLocation,
-} from "react-router-dom";
+import { useParams, useLocation } from "react-router-dom";
 import ReactWordcloud from "react-wordcloud";
 
 function TopicView(props) {
@@ -24,16 +15,18 @@ function TopicView(props) {
   const [page, setPage] = useState(1);
   const [lastPage, setLastPage] = useState(false);
   const [sort, setSort] = useState("new");
+  const [loadOpinions, setLoadOpinions] = useState(true)
   const [wordCloud, setWordCloud] = useState([]);
 
   useEffect(() => {
-    if (opinions === 0 || location !== prevLocation) {
+    if (loadOpinions || location !== prevLocation) {
+      setLoadOpinions(false)
       fetch(URLIS + `/topic/${topicTitle}/opinions/${sort}/${page}`)
         .then((resp) => resp.json())
         .then((message) => {
           setTopicId(message.topic);
           setOpinions(message.opinions);
-          setLastPage(message.last)
+          setLastPage(message.last);
         });
       if (wordCloud.length === 0) {
         fetch(URLIS + `/topic/${topicTitle}/wordcloud/40`)
@@ -49,7 +42,7 @@ function TopicView(props) {
       let count = 0;
       return opinions.map((opinion) => {
         count += 1;
-        return <Opinion key={count} offset={count/4} opinion={opinion} />;
+        return <Opinion key={count} offset={count / 4} opinion={opinion} />;
       });
     }
   }

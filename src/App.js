@@ -86,15 +86,15 @@ class App extends Component {
           <div className="navbar navbar-default bg-dark navbar-fixed-top" style={{position: 'fixed', width: '100%', zIndex: '10'}}>
             <div className="container">
               <MediaQuery maxDeviceWidth={764}>
-                <Link to="/" class="navbar-haypenny" href="#">
-                  <img className="img-icon" src={logo} />
+                <Link to="/" className="navbar-haypenny" href="#">
+                  <img className="img-icon" alt="Haypenny logo" src={logo} />
                 </Link>
                 <NavBar changePopUp={() => this.changePopUp()}></NavBar>
               </MediaQuery>
               <MediaQuery minDeviceWidth={765}>
                 <div style={{ textAlign: "center" }}>
-                  <Link to="/" class="navbar-haypenny" href="#">
-                    <img className="img-fluid" src={logo} />
+                  <Link to="/" className="navbar-haypenny" href="#">
+                    <img className="img-fluid" alt="Haypenny logo" src={logo} />
                   </Link>
                 </div>
                 <NavBar changePopUp={() => this.changePopUp()} />

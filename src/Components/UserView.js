@@ -1,18 +1,11 @@
 import React, { useState, useEffect, useRef } from "react";
 import { connect } from "react-redux";
 import URLIS from "../Constants/URL";
-import Opinion from "./Opinion";
-import Overlay from "react-bootstrap/Overlay";
+import Opinion from "./Opinion"
 import {
-  BrowserRouter as Router,
-  Switch,
-  Route,
-  Link,
-  useRouteMatch,
   useParams,
   useLocation,
 } from "react-router-dom";
-import { createBrowserHistory } from "history";
 import ReactWordcloud from "react-wordcloud";
 
 function UserView(props) {
@@ -27,6 +20,7 @@ function UserView(props) {
   const [popularity, setPopularity] = useState(0);
   const [weird, setWeird] = useState(0);
   const [loadCloud, setLoadCloud] = useState(true)
+  const [loadOpinions, setLoadOpinions] = useState(true)
 
   useEffect(() => {
     if (popularity === 0) {
@@ -38,9 +32,19 @@ function UserView(props) {
         });
     }
     if (location !== prevLocation) {
-      setWordCloud([]);
+      fetch(URLIS + `/user/${userName}/wordcloud/40`)
+          .then((resp) => resp.json())
+          .then((cloud) => {
+            
+            setWordCloud(cloud);
+          });
+      setLoadOpinions(true)
+      setLoadCloud(true)
+      setPopularity(-3.14)
     }
-    if (opinions === 0 || location !== prevLocation) {
+    if (loadOpinions || location !== prevLocation) {
+      setLoadOpinions(false)
+      console.log('test')
       fetch(URLIS + `/user/${userName}/opinions/${sort}/${page}`)
         .then((resp) => resp.json())
         .then((message) => {
@@ -49,11 +53,11 @@ function UserView(props) {
           setLastPage(message.last);
         });
       if (loadCloud) {
+        console.log('test 2')
         setLoadCloud(false)
         fetch(URLIS + `/user/${userName}/wordcloud/40`)
           .then((resp) => resp.json())
           .then((cloud) => {
-            
             setWordCloud(cloud);
           });
       }
@@ -121,13 +125,13 @@ function UserView(props) {
               className="card-title"
               style={{ textAlign: "center", paddingTop: "20px" }}
             >
-              Popularity: {<a style={{color: `${popularity > 0 ? "green" : "red"}`}}>{popularity}</a>}
+              Popularity: {<a href="#" style={{color: `${popularity > 0 ? "green" : "red"}`}}>{popularity}</a>}
             </h4>
             <h4
               className="card-title"
               style={{ textAlign: "center", paddingTop: "20px" }}
             >
-              Weirdness: {<a style={{color: `${weird > 0 ? "green" : "red"}`}}>{weird}</a>}
+              Weirdness: {<a href="#" style={{color: `${weird > 0 ? "green" : "red"}`}}>{weird}</a>}
             </h4>
           </div>
           <div className="col-md">{simpleWordCloud()}</div>

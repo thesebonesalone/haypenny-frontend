@@ -1,13 +1,12 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import URLIS from "../Constants/URL";
 import { Link } from "react-router-dom";
 
 class NavBar extends Component {
   renderLogin() {
     return (
       <div className="navbar-item float-md-right">
-      <button class="btn-primary" onClick={() => this.props.changePopUp()}>
+      <button className="btn-primary" onClick={() => this.props.changePopUp()}>
         Log In
       </button>
       </div>

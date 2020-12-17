@@ -2,7 +2,6 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import OpinionForm from "./OpinionForm";
 import { Link } from "react-router-dom";
-import URLIS from "../Constants/URL";
 
 class Topic extends Component {
   constructor(props) {

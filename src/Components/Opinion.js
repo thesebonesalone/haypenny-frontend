@@ -2,7 +2,6 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import URLIS from "../Constants/URL";
 import { Link } from "react-router-dom";
-import Overlay from "react-bootstrap/Overlay";
 
 class Opinion extends Component {
   constructor(props) {
@@ -79,7 +78,7 @@ class Opinion extends Component {
     };
     fetch(URLIS + "/reaction", reqObj)
       .then((resp) => resp.json())
-      .then((message) => {
+      .then(() => {
         this.setState({
           showReact: false,
           loveOffset: 0,
@@ -176,7 +175,7 @@ class Opinion extends Component {
     return (
       <div className="container-fluid" >
         <div className="row">
-          <div classname="container-fluid" style={{ width: "50%" }}>
+          <div className="container-fluid" style={{ width: "50%" }}>
             <div className="row">
               <div className="col-sm">
                 <div
