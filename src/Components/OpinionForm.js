@@ -15,7 +15,7 @@ class OpinionForm extends Component {
     fetch(URLIS + `/opinion/view/${this.props.user.id}/${this.props.topic.id}`)
       .then((resp) => resp.json())
       .then((opinion) => {
-        console.log(opinion);
+       
         //debugger
         this.setState({
           opinionOwned: opinion.opinion,

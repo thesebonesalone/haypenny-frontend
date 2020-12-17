@@ -61,7 +61,6 @@ class App extends Component {
       fetch(URLIS + "/current_user", reqObj)
         .then((resp) => resp.json())
         .then((user) => {
-          console.log(user);
           store.dispatch({ type: "LOGIN", user: user.user });
         });
     }

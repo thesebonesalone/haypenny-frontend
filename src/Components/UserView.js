@@ -23,30 +23,54 @@ function UserView(props) {
   const [lastPage, setLastPage] = useState(false);
   const [page, setPage] = useState(1);
   const [wordCloud, setWordCloud] = useState([]);
+  const [sort, setSort] = useState("new");
+  const [popularity, setPopularity] = useState(0);
+  const [weird, setWeird] = useState(0);
+  const [loadCloud, setLoadCloud] = useState(true)
+
   useEffect(() => {
-    if (location !== prevLocation) {
-      setWordCloud([])
-    }
-    if (opinions === 0 || location !== prevLocation) {
+    if (popularity === 0) {
       fetch(URLIS + `/user/${userName}`)
         .then((resp) => resp.json())
         .then((message) => {
-          console.log(message);
-          //debugger
-          setOpinions(message.user.opinions);
+          setPopularity(message.popularity);
+          setWeird(message.weird);
         });
-      if (wordCloud.length === 0) {
+    }
+    if (location !== prevLocation) {
+      setWordCloud([]);
+    }
+    if (opinions === 0 || location !== prevLocation) {
+      fetch(URLIS + `/user/${userName}/opinions/${sort}/${page}`)
+        .then((resp) => resp.json())
+        .then((message) => {
+          //debugger
+          setOpinions(message.opinions);
+          setLastPage(message.last);
+        });
+      if (loadCloud) {
+        setLoadCloud(false)
         fetch(URLIS + `/user/${userName}/wordcloud/40`)
           .then((resp) => resp.json())
           .then((cloud) => {
-            console.log(cloud);
+            
             setWordCloud(cloud);
           });
       }
     }
   });
+
   function loadNextPage() {
-    console.log("Something");
+    let newPage = page + 1;
+    setPage(newPage);
+    fetch(URLIS + `/user/${userName}/opinions/${sort}/${newPage}`)
+      .then((resp) => resp.json())
+      .then((message) => {
+      
+        let newOpinions = [...opinions, ...message.opinions];
+        setOpinions(newOpinions);
+        setLastPage(message.last);
+      });
   }
 
   function renderOpinions() {
@@ -63,19 +87,85 @@ function UserView(props) {
     }
   }
 
+  function handleSortChange(e) {
+    e.preventDefault();
+    debugger;
+    if (sort !== e.target.name) {
+      setOpinions(0);
+      setPage(1);
+      setLastPage(false);
+      setSort(e.target.name);
+    }
+  }
+
   function simpleWordCloud() {
-    return <ReactWordcloud options={{rotations: 0, rotationAngles: [0]}} words={wordCloud} />;
+    return (
+      <ReactWordcloud
+        options={{ rotations: 0, rotationAngles: [0] }}
+        words={wordCloud}
+      />
+    );
   }
   return (
     <div className="card">
-      <h2
-        className="card-title"
-        style={{ textAlign: "center", paddingTop: "20px" }}
-      >
-        {userName}
-      </h2>
-      <div>{simpleWordCloud()}</div>
+      <div className="container-fluid">
+        <div className="row">
+          <div className="col-md">
+            <h2
+              className="card-title"
+              style={{ textAlign: "center", paddingTop: "20px" }}
+            >
+              {userName}
+            </h2>
+            <h4
+              className="card-title"
+              style={{ textAlign: "center", paddingTop: "20px" }}
+            >
+              Popularity: {<a style={{color: `${popularity > 0 ? "green" : "red"}`}}>{popularity}</a>}
+            </h4>
+            <h4
+              className="card-title"
+              style={{ textAlign: "center", paddingTop: "20px" }}
+            >
+              Weirdness: {<a style={{color: `${weird > 0 ? "green" : "red"}`}}>{weird}</a>}
+            </h4>
+          </div>
+          <div className="col-md">{simpleWordCloud()}</div>
+        </div>
+      </div>
+      <div className="container" style={{textAlign: 'center'}}>
+        <form>
+          <button
+            className="btn btn-secondary"
+            name="new"
+            onClick={(e) => handleSortChange(e)}
+          >
+            New
+          </button>
+          <button
+            className="btn btn-secondary"
+            name="popular"
+            onClick={(e) => handleSortChange(e)}
+          >
+            Popular
+          </button>
+          <button
+            className="btn btn-secondary"
+            name="weird"
+            onClick={(e) => handleSortChange(e)}
+          >
+            Weird
+          </button>
+        </form>
+      </div>
       <div className="card-body">{renderOpinions()}</div>
+      <div className="card-body" style={{ textAlign: "center" }}>
+        {lastPage ? null : (
+          <button className="btn btn-primary" onClick={() => loadNextPage()}>
+            Load More
+          </button>
+        )}
+      </div>
     </div>
   );
 }

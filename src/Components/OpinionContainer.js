@@ -27,7 +27,6 @@ class OpinionContainer extends Component {
   }
 
   topicFormDidSubmit() {
-    console.log("Testing Prop.");
     this.setState({
       topicFormDidSubmit: true,
       topicFilter: "new",
@@ -44,7 +43,6 @@ class OpinionContainer extends Component {
     fetch(URLIS + `/opinion/feed/${filter}/${this.state.opinionPage}`)
       .then((resp) => resp.json())
       .then((message) => {
-        console.log(message);
         this.setState({
           filteredOpinions: message.opinions,
           lastOpinionPage: message.last,
@@ -55,7 +53,7 @@ class OpinionContainer extends Component {
     fetch(URLIS + `/topic/feed/${filter}/${this.state.topicPage}`)
       .then((resp) => resp.json())
       .then((message) => {
-        console.log(message);
+        
         this.setState({
           filteredTopics: message.topics,
           lastTopicPage: message.last,
@@ -69,7 +67,6 @@ class OpinionContainer extends Component {
   }
   handleSearchSubmit = (e) => {
     e.preventDefault();
-    console.log("search feature");
   };
   handleChange = (e) => {
     switch (e.target.name) {
@@ -144,7 +141,6 @@ class OpinionContainer extends Component {
   }
 
   handleMoreTopics(e) {
-    console.log("Loading more topics");
     let newTopicPage = this.state.topicPage + 1;
     this.setState({
       loadingTopics: true,
