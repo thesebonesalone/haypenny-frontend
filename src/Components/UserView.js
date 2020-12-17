@@ -80,7 +80,7 @@ function UserView(props) {
         count += 1;
         return (
           <React.Fragment>
-            <Opinion key={count} opinion={opinion} />
+            <Opinion key={count} offset={count/4} opinion={opinion} />
           </React.Fragment>
         );
       });

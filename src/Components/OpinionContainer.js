@@ -95,7 +95,7 @@ class OpinionContainer extends Component {
     if (this.state.filteredOpinions.length !== 0) {
       return this.state.filteredOpinions.map((opinion) => {
         count += 1;
-        return <Opinion key={count} opinion={opinion} />;
+        return <Opinion key={count} offset={count/4} opinion={opinion} />;
       });
     } else {
       return <h5>Getting some knowledge...</h5>;

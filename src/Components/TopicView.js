@@ -49,7 +49,7 @@ function TopicView(props) {
       let count = 0;
       return opinions.map((opinion) => {
         count += 1;
-        return <Opinion key={count} opinion={opinion} />;
+        return <Opinion key={count} offset={count/4} opinion={opinion} />;
       });
     }
   }

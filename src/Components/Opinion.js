@@ -15,6 +15,7 @@ class Opinion extends Component {
       dislikeOffset: 0,
       angryOffset: 0,
       confusedOffset: 0,
+      position: 100 + (this.props.offset * 100)
     };
   }
   parseDate() {
@@ -42,6 +43,25 @@ class Opinion extends Component {
 
     return returnDate;
   }
+
+  componentDidMount() {
+    setTimeout(() => this.changePosition(), 20)
+  }
+
+  changePosition() {
+    let newXPos = this.state.position;
+    newXPos = newXPos - newXPos / 5;
+    if (newXPos < 0.01) {
+      newXPos = 0;
+    } else {
+      setTimeout(() => this.changePosition(), 20);
+    }
+    this.setState({
+      position: newXPos,
+    });
+  }
+
+
   handleClick = (e) => {
     let name = e.target.dataset.name;
     // debugger
@@ -154,7 +174,7 @@ class Opinion extends Component {
 
   renderReactions() {
     return (
-      <div className="container-fluid">
+      <div className="container-fluid" >
         <div className="row">
           <div classname="container-fluid" style={{ width: "50%" }}>
             <div className="row">
@@ -251,7 +271,7 @@ class Opinion extends Component {
   render() {
     //debugger
     return (
-      <div className="card" style={{ margin: "20px" }}>
+      <div className="card"  style={{margin: '1%', opacity: `${(100 - this.state.position) / 100}`, position: "relative", right: `${this.state.position}%`}}>
         <div className="container-fluid">
           <div className="row">
             <div className="col-xl-8">
