@@ -51,6 +51,7 @@ function TopicView(props) {
     debugger;
     if (sort !== e.target.name) {
       setOpinions(0);
+      setLoadOpinions(true)
       setPage(1);
       setLastPage(false);
       setSort(e.target.name);

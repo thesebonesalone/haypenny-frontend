@@ -95,6 +95,7 @@ function UserView(props) {
     e.preventDefault();
     debugger;
     if (sort !== e.target.name) {
+      setLoadOpinions(true)
       setOpinions(0);
       setPage(1);
       setLastPage(false);
@@ -125,13 +126,13 @@ function UserView(props) {
               className="card-title"
               style={{ textAlign: "center", paddingTop: "20px" }}
             >
-              Popularity: {<a href="#" style={{color: `${popularity > 0 ? "green" : "red"}`}}>{popularity}</a>}
+              Popularity: {<b style={{color: `${popularity > 0 ? "green" : "red"}`}}>{popularity}</b>}
             </h4>
             <h4
               className="card-title"
               style={{ textAlign: "center", paddingTop: "20px" }}
             >
-              Weirdness: {<a href="#" style={{color: `${weird > 0 ? "green" : "red"}`}}>{weird}</a>}
+              Weirdness: {<b style={{color: `${weird > 0 ? "green" : "red"}`}}>{weird}</b>}
             </h4>
           </div>
           <div className="col-md">{simpleWordCloud()}</div>
