@@ -17,13 +17,13 @@ function UserView(props) {
   const [page, setPage] = useState(1);
   const [wordCloud, setWordCloud] = useState([]);
   const [sort, setSort] = useState("new");
-  const [popularity, setPopularity] = useState(0);
+  const [popularity, setPopularity] = useState(-3.14);
   const [weird, setWeird] = useState(0);
   const [loadCloud, setLoadCloud] = useState(true)
   const [loadOpinions, setLoadOpinions] = useState(true)
 
   useEffect(() => {
-    if (popularity === 0) {
+    if (popularity === -3.14) {
       fetch(URLIS + `/user/${userName}`)
         .then((resp) => resp.json())
         .then((message) => {
