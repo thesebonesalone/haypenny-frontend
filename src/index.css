@@ -66,9 +66,11 @@ h6{
 .btn-primary {
   background-color: #6C9F7F;
   outline-color:  #6C9F7F;
+  margin: 1%;
 }
 .btn-secondary {
   background-color: #E3A473;
+  margin: 1%;
 }
 .btn-primary:hover {
   background-color:  #395343;

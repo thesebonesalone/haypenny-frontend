@@ -11,13 +11,16 @@ import TopicRouter from "./Components/TopicRouter";
 import UserRouter from "./Components/UserRouter";
 import React, { Component } from "react";
 import MediaQuery from "react-responsive";
+import Notice from "./Components/Notice"
 import logo from "./assets/logo_transparent_background.png";
 
 const reducer = (
-  state = { heldTopic: null, user: { name: "", id: null } },
+  state = { heldTopic: null, dismiss: false, user: { name: "", id: null } },
   action
 ) => {
   switch (action.type) {
+    case "DISMISS_NOTICE":
+      return {...state, dismiss: true}
     case "HOLD_TOPIC":
       return { ...state, heldTopic: action.topic };
     case "RELEASE_TOPIC":
@@ -34,7 +37,7 @@ const reducer = (
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 const store = createStore(
   reducer,
-  { heldTopic: null, user: { name: "", id: null } },
+  { heldTopic: null, dismiss: false, user: { name: "", id: null } },
   composeEnhancers(applyMiddleware(thunk))
 );
 store.dispatch({ type: "@@INIT" });
@@ -45,10 +48,12 @@ class App extends Component {
     this.state = {
       popUp: false,
       mount: null,
+      dismiss: store.getState().dimiss
     };
   }
 
   componentDidMount() {
+    //debugger
     const token = localStorage.getItem("my_app_token");
     if (token) {
       let reqObj = {
@@ -67,7 +72,6 @@ class App extends Component {
   }
 
   changePopUp() {
-    console.log(this.state.popUp);
     let newPopUp = this.state.popUp;
     this.setState({
       popUp: !newPopUp,
@@ -76,6 +80,11 @@ class App extends Component {
 
   renderSignUp() {
     return <div>Login</div>;
+  }
+  dismiss() {
+    this.setState({
+      dismiss: true
+    })
   }
 
   render() {
@@ -115,6 +124,7 @@ class App extends Component {
               </Route>
             </Switch>
           </div>
+          {this.state.dismiss ? null : <Notice dismiss={() => this.dismiss()}/>}
           {this.state.popUp ? (
             <Login changePopUp={() => this.changePopUp()} />
           ) : null}

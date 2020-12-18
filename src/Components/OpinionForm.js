@@ -84,7 +84,7 @@ class OpinionForm extends Component {
       return (
         <React.Fragment>
           <h5>Your Opinion</h5>
-          <Opinion opinion={this.state.opinionOwned} />
+          <Opinion key={1} offset={0.25} opinion={this.state.opinionOwned} />
           {(Date.now().valueOf() - Date.parse(this.state.opinionOwned.created_at)) > 172800000 ? this.renderForm("Has your opinion changed?") : "You must wait to change your opinion."}
           
         </React.Fragment>
