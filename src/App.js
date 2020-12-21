@@ -13,6 +13,7 @@ import React, { Component } from "react";
 import MediaQuery from "react-responsive";
 import Notice from "./Components/Notice"
 import logo from "./assets/logo_transparent_background.png";
+import OpinionRouter from './Components/OpinionRouter'
 
 const reducer = (
   state = { heldTopic: null, dismiss: false, user: { name: "", id: null } },
@@ -118,6 +119,9 @@ class App extends Component {
               </Route>
               <Route path="/user">
                 <UserRouter />
+              </Route>
+              <Route path="/opinion">
+                <OpinionRouter />
               </Route>
               <Route path="/">
                 <OpinionContainer />

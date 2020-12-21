@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { Component, useState, useEffect, useRef } from "react";
 import { connect } from "react-redux";
 import URLIS from "../Constants/URL";
 import Opinion from "./Opinion";

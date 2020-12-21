@@ -14,7 +14,7 @@ class Opinion extends Component {
       dislikeOffset: 0,
       angryOffset: 0,
       confusedOffset: 0,
-      position: 100 + (this.props.offset * 100)
+      position: 100 + this.props.offset * 100,
     };
   }
   parseDate() {
@@ -44,7 +44,7 @@ class Opinion extends Component {
   }
 
   componentDidMount() {
-    setTimeout(() => this.changePosition(), 20)
+    setTimeout(() => this.changePosition(), 20);
   }
 
   changePosition() {
@@ -59,7 +59,6 @@ class Opinion extends Component {
       position: newXPos,
     });
   }
-
 
   handleClick = (e) => {
     let name = e.target.dataset.name;
@@ -173,7 +172,7 @@ class Opinion extends Component {
 
   renderReactions() {
     return (
-      <div className="container-fluid" >
+      <div className="container-fluid">
         <div className="row">
           <div className="container-fluid" style={{ width: "50%" }}>
             <div className="row">
@@ -252,7 +251,7 @@ class Opinion extends Component {
 
   renderReactButton() {
     return (
-      <div>
+      <React.Fragment>
         <React.Fragment>
           {this.state.showReact ? this.renderReactions() : null}
         </React.Fragment>
@@ -263,40 +262,61 @@ class Opinion extends Component {
         >
           React
         </button>
-      </div>
+      </React.Fragment>
     );
   }
 
   render() {
     //debugger
     return (
-      <div className="card"  style={{margin: '1%', opacity: `${(100 - this.state.position) / 100}`, position: "relative", right: `${this.state.position}%`}}>
+      <div
+        className="card"
+        style={{
+          margin: "1%",
+          opacity: `${(100 - this.state.position) / 100}`,
+          position: "relative",
+          right: `${this.state.position}%`,
+        }}
+      >
         <div className="container-fluid">
           <div className="row">
             <div className="col-xl-8">
               <div className="card-body">
                 <h5 className="card-title">
                   On the topic of{" "}
-                  <Link to={`/topic/${this.props.opinion.topic}`} style={{fontFamily: "Nokio Medium"}}>
+                  <Link
+                    to={`/topic/${this.props.opinion.topic}`}
+                    style={{ fontFamily: "Nokio Medium" }}
+                  >
                     {this.props.opinion.topic}
                   </Link>
                 </h5>
                 <div>{this.props.opinion.content}</div>
                 <div>
-                  ~<Link to={`/user/${this.props.opinion.user}`}>{this.props.opinion.user}</Link>, {this.parseDate()}
+                  ~
+                  <Link to={`/user/${this.props.opinion.user}`}>
+                    {this.props.opinion.user}
+                  </Link>
+                  , {this.parseDate()}
                 </div>
                 <div>
-                  {this.props.user.name !== ""
-                    ? this.renderReactButton()
-                    : null}
+                  <div>
+                    {this.props.user.name !== ""
+                      ? this.renderReactButton()
+                      : null}
+                    <Link to={`/opinion/view/${this.props.opinion.id}`} className="btn btn-primary">
+                      Take a Closer Look
+                    </Link>
+                  </div>
                 </div>
               </div>
             </div>
             <div className="col-sm-4">
-                <div className="card-body">
-                  <h6 className="card-title">Reactions</h6>
-                  <div className="card-text reaction-box">{this.renderReactionsTally()}</div>
-                
+              <div className="card-body">
+                <h6 className="card-title">Reactions</h6>
+                <div className="card-text reaction-box">
+                  {this.renderReactionsTally()}
+                </div>
               </div>
             </div>
           </div>
