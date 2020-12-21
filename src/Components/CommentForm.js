@@ -35,6 +35,7 @@ class CommentForm extends Component {
             this.setState({
                 comment: ""
             })
+            this.props.addCommentToStable(message.comment)
          })
     
 

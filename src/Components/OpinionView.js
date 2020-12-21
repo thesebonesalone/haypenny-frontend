@@ -96,6 +96,12 @@ function OpinionView(props) {
     );
   }
 
+  function addCommentToStable(comment) {
+      console.log(comment)
+    let newUserComments = userComments.concat([comment])
+      setUserComments(newUserComments)
+  }
+
   function renderOpinion() {
     return (
       <div className="container-fluid">
@@ -115,7 +121,7 @@ function OpinionView(props) {
             <h2> Comments</h2>
             <div className="card">
               {props.user.name !== "" ? (
-                <CommentForm opinionId={opinion.id} />
+                <CommentForm addCommentToStable={(comment) => addCommentToStable(comment)} opinionId={opinion.id} />
               ) : null}
             </div>
 
