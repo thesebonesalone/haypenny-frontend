@@ -93,6 +93,9 @@ a {
 .img-icon{
   height: 50px;
 }
+.highlighted{
+  background-color: #f5e9e0;
+}
 
 
 a:hover {

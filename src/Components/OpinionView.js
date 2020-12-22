@@ -53,7 +53,7 @@ function OpinionView(props) {
     let count = 0;
     return oldOpinions.map((subOpinion) => {
       count += 1;
-      return <Opinion key={count} offset={count / 4} opinion={subOpinion} />;
+      return <Opinion highlight={subOpinion.id === parseInt(opinionId)} key={count} offset={count / 4} opinion={subOpinion} />;
     });
   }
 

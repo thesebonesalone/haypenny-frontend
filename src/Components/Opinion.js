@@ -14,6 +14,7 @@ class Opinion extends Component {
       dislikeOffset: 0,
       angryOffset: 0,
       confusedOffset: 0,
+      highlight: this.props.highlight,
       position: 100 + this.props.offset * 100,
     };
   }
@@ -44,6 +45,7 @@ class Opinion extends Component {
   }
 
   componentDidMount() {
+    console.log(this.state.highlight)
     setTimeout(() => this.changePosition(), 20);
   }
 
@@ -270,7 +272,7 @@ class Opinion extends Component {
     //debugger
     return (
       <div
-        className="card"
+        className={`card ${this.props.highlight ? "highlighted" : ""}`}
         style={{
           margin: "1%",
           opacity: `${(100 - this.state.position) / 100}`,
@@ -278,8 +280,8 @@ class Opinion extends Component {
           right: `${this.state.position}%`,
         }}
       >
-        <div className="container-fluid">
-          <div className="row">
+        <div className="container-fluid" >
+          <div className="row" >
             <div className="col-xl-8">
               <div className="card-body">
                 <h5 className="card-title">
