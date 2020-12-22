@@ -64,7 +64,7 @@ function OpinionView(props) {
       if (comment.user !== props.user.name) {
       return (
         <div className="col-md">
-          <Comment key={count} comment={comment} />
+          <Comment userOwned={false} key={count} comment={comment} />
         </div>
       );
       } else {
@@ -79,7 +79,7 @@ function OpinionView(props) {
       count += 1;
       return (
         <div className="col-md">
-          <Comment key={count} comment={comment} />
+          <Comment userOwned={true} key={count} comment={comment} />
         </div>
       );
     });
