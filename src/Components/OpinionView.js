@@ -16,9 +16,17 @@ function OpinionView(props) {
   const [comments, setComments] = useState([]);
   const [userComments, setUserComments] = useState([]);
   const prevOpinion = usePrevious(opinionId);
+  const [page,setPage] = useState(1)
+  const [last, setLast] = useState(false)
+  const [loading, setLoading] = useState(false)
   useEffect(() => {
     if (prevOpinion !== opinionId) {
       setOpinion({ id: 0 });
+      setComments([])
+      setPage(1)
+      setLast(false)
+      setLoading(false)
+      getCommentsPage(1)
     }
     if (opinion.id === 0) {
       setOpinion({ id: -1 });
@@ -40,14 +48,27 @@ function OpinionView(props) {
             setUserComments(message.comments);
           });
       }
-      fetch(URLIS + `/comment/opinioncomments/${opinionId}`)
-        .then((resp) => resp.json())
-        .then((message) => {
-          console.log(message);
-          setComments(message.comments);
-        });
+      getCommentsPage(page)
+      // fetch(URLIS + `/comment/opinioncomments/${opinionId}`)
+      //   .then((resp) => resp.json())
+      //   .then((message) => {
+      //     console.log(message);
+      //     setComments(message.comments);
+      //   });
     }
   });
+
+
+  function getCommentsPage(page){
+    fetch(URLIS + `/comment/opinioncomments/${opinionId}/${page}`)
+    .then(resp => resp.json())
+    .then(message => {
+      let newComments = comments
+      setComments(newComments.concat(message.comments))
+      setLast(message.last)
+      setLoading(false)
+    })
+  }
 
   function renderOldOpinions() {
     let count = 0;
@@ -84,6 +105,13 @@ function OpinionView(props) {
       );
     });
   }
+  function handleLoadComments(){
+    if (!loading){
+      let newPage = page + 1
+      setPage(newPage)
+      getCommentsPage(newPage)
+    }
+  }
 
   function renderUserCommentsDiv() {
     return (
@@ -94,6 +122,15 @@ function OpinionView(props) {
         </div>
       </div>
     );
+  }
+  function renderCommentsButton(){
+    if (last || comments.length === 0) {
+      return null
+    } else {
+      return (
+        <div><button className="btn btn-secondary" onClick={() => handleLoadComments()}>Load More Comments</button></div>
+      )
+    }
   }
 
   function addCommentToStable(comment) {
@@ -126,6 +163,7 @@ function OpinionView(props) {
             </div>
 
             {renderComments()}
+            {renderCommentsButton()}
           </div>
         </div>
       </div>

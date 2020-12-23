@@ -45,7 +45,7 @@ class Opinion extends Component {
   }
 
   componentDidMount() {
-    console.log(this.state.highlight)
+    console.log(this.state.highlight);
     setTimeout(() => this.changePosition(), 20);
   }
 
@@ -176,9 +176,9 @@ class Opinion extends Component {
     return (
       <div className="container-fluid">
         <div className="row">
-          <div className="container-fluid" style={{ width: "50%" }}>
+          <div className="container-fluid col-md" style={{ width: "50%" }}>
             <div className="row">
-              <div className="col-sm">
+              <div className="col-">
                 <div
                   className="react-emoji"
                   type="button"
@@ -189,7 +189,7 @@ class Opinion extends Component {
                   😍
                 </div>
               </div>
-              <div className="col-sm">
+              <div className="col-">
                 <div
                   className="react-emoji"
                   type="button"
@@ -200,7 +200,7 @@ class Opinion extends Component {
                   🤣
                 </div>
               </div>
-              <div className="col-sm">
+              <div className="col-">
                 <div
                   className="react-emoji"
                   type="button"
@@ -211,7 +211,7 @@ class Opinion extends Component {
                   😊
                 </div>
               </div>
-              <div className="col-sm">
+              <div className="col-">
                 <div
                   className="react-emoji"
                   type="button"
@@ -222,7 +222,7 @@ class Opinion extends Component {
                   😠
                 </div>
               </div>
-              <div className="col-sm">
+              <div className="col-">
                 <div
                   className="react-emoji"
                   type="button"
@@ -233,7 +233,7 @@ class Opinion extends Component {
                   😡
                 </div>
               </div>
-              <div className="col-sm">
+              <div className="col-">
                 <div
                   className="react-emoji"
                   type="button"
@@ -280,8 +280,8 @@ class Opinion extends Component {
           right: `${this.state.position}%`,
         }}
       >
-        <div className="container-fluid" >
-          <div className="row" >
+        <div className="container-fluid">
+          <div className="row">
             <div className="col-xl-8">
               <div className="card-body">
                 <h5 className="card-title">
@@ -306,7 +306,10 @@ class Opinion extends Component {
                     {this.props.user.name !== ""
                       ? this.renderReactButton()
                       : null}
-                    <Link to={`/opinion/view/${this.props.opinion.id}`} className="btn btn-primary">
+                    <Link
+                      to={`/opinion/view/${this.props.opinion.id}`}
+                      className="btn btn-primary"
+                    >
                       Take a Closer Look
                     </Link>
                   </div>

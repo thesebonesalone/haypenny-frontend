@@ -16,7 +16,7 @@ class Comment extends Component {
       voteTally: 0,
       voteOffset: 0,
       votes: this.props.comment.votes,
-      hide: false
+      hide: false,
     };
   }
   componentDidMount() {
@@ -89,64 +89,75 @@ class Comment extends Component {
       });
   }
 
-  handleDelete(){
+  handleDelete() {
     let reqObj = {
-      method: "DELETE"
-    }
+      method: "DELETE",
+    };
     fetch(URLIS + `/comment/${this.props.comment.id}`, reqObj)
-    .then(resp => resp.json())
-    .then(message => {
-      console.log(message)
-      this.setState({
-        hide: true
-      })
-    })
+      .then((resp) => resp.json())
+      .then((message) => {
+        console.log(message);
+        this.setState({
+          hide: true,
+        });
+      });
   }
 
-  renderDelete(){
-    return <button className="btn btn-secondary" onClick={() => this.handleDelete()}>Delete</button>
+  renderDelete() {
+    return (
+      <button className="btn-danger exit" onClick={() => this.handleDelete()}>
+        X
+      </button>
+    );
   }
-  renderComment(){
-    return  (<div className="card">
-    <h5 className="card-title" style={{ margin: "1%" }}>
-      <Link to={`/user/${this.props.comment.user}`}>
-        {this.props.comment.user}
-      </Link>{" "}
-      on {this.state.parseDate}
-    </h5>
+  renderComment() {
+    return (
+      <div className="card">
+        <h5 className="card-title" style={{ margin: "1%" }}>
+          <Link to={`/user/${this.props.comment.user}`}>
+            {this.props.comment.user}
+          </Link>{" "}
+          on {this.state.parseDate}
+        </h5>
 
-    <div className="container-fluid">
-      <div className="row" style={{ margin: "1%" }}>
-        <div className="col-" style={{ margin: "1%", textAlign: 'center' }}>
-          Score: {this.state.voteTally - this.state.voteOffset}
-        </div>
-        <div className="col-" style={{ margin: "1%" }}>
-          <div className="" onClick={() => this.handleUpvote()}>
-            👍
+        <div className="container-fluid">
+          <div className="row" style={{ margin: "1%" }}>
+            <div className="col-" style={{ margin: "1%" }}>
+              <div className="react-emoji" onClick={() => this.handleUpvote()}>
+                👍
+              </div>
+              <div
+                className="react-emoji"
+                onClick={() => this.handleDownvote()}
+              >
+                👎
+              </div>
+            </div>
+            <div
+              className="col- "
+              style={{ margin: "1%", textAlign: "center" }}
+            >
+              <div className="center">
+                Score: {this.state.voteTally - this.state.voteOffset}
+              </div>
+            </div>
+
+            <div className="col col-lg">
+              <div className="card-body">
+                <div>{this.props.comment.content}</div>
+              </div>
+            </div>
           </div>
-          <div className="" onClick={() => this.handleDownvote()}>
-            👎
-          </div>
         </div>
-        <div className="col col-lg">
-          <div className="card-body">
-            <div>{this.props.comment.content}</div>
-          </div>
-        </div>
+        <div>{this.props.userOwned ? this.renderDelete() : null}</div>
       </div>
-    </div>
-    <div>
-      {this.props.userOwned ? this.renderDelete() : null}
-    </div>
-  </div>)
-
+    );
   }
   render() {
     return (
       <React.Fragment>
         {this.state.hide ? null : this.renderComment()}
       </React.Fragment>
-     
     );
   }
 }

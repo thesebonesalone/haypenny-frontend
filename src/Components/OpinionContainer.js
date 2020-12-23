@@ -53,7 +53,6 @@ class OpinionContainer extends Component {
     fetch(URLIS + `/topic/feed/${filter}/${this.state.topicPage}`)
       .then((resp) => resp.json())
       .then((message) => {
-        
         this.setState({
           filteredTopics: message.topics,
           lastTopicPage: message.last,
@@ -95,7 +94,7 @@ class OpinionContainer extends Component {
     if (this.state.filteredOpinions.length !== 0) {
       return this.state.filteredOpinions.map((opinion) => {
         count += 1;
-        return <Opinion key={count} offset={count/4} opinion={opinion} />;
+        return <Opinion key={count} offset={count / 4} opinion={opinion} />;
       });
     } else {
       return <h5>Getting some knowledge...</h5>;
@@ -229,6 +228,11 @@ class OpinionContainer extends Component {
       true
     );
   }
+  titleize(word) {
+    let wordArray = word.split("");
+    wordArray[0] = wordArray[0].toUpperCase();
+    return wordArray.join("");
+  }
 
   holdOpinions() {
     return (
@@ -260,6 +264,9 @@ class OpinionContainer extends Component {
               Weird
             </button>
           </form>
+          <div className="card-title" style={{ margin: "1%", textAlign: "center" }}>
+            <h3>{this.titleize(this.state.opinionFilter) + " Opinions"}</h3>
+          </div>
           {this.renderOpinions()}
         </div>
         <div className="card">
@@ -293,10 +300,13 @@ class OpinionContainer extends Component {
             <button className="btn btn-primary" onClick={() => this.swap()}>
               {this.state.showOpinions ? "Topics" : "Opinions"}
             </button>
-            <button className="btn btn-secondary">New</button>
-            <button className="btn btn-secondary">Popular</button>
+            {/* <button className="btn btn-secondary">New</button>
+            <button className="btn btn-secondary">Popular</button> */}
             <TopicForm didUpdate={() => this.topicFormDidSubmit()} />
           </form>
+          <div className="card-title" style={{ margin: "1%", textAlign: "center" }}>
+            <h3>{"All Topics"}</h3>
+          </div>
           {this.renderTopics()}
         </div>
         {this.props.topic ? this.renderNewTopic() : null}

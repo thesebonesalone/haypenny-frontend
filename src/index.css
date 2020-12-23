@@ -49,6 +49,7 @@ h6{
 }
 .exit {
   padding-bottom: 1%;
+  margin: auto;
   position: absolute;
   width: 25px;
   height: 25px;
@@ -67,6 +68,17 @@ h6{
   background-color: #6C9F7F;
   outline-color:  #6C9F7F;
   margin: 1%;
+}
+.card {
+  border: 1px solid #E3A473;
+}
+.card:hover {
+  background-color: #f0f0f0;
+}
+.center {
+  margin: auto;
+  border: 3px solid #E3A473;
+  padding: 10px;
 }
 .btn-secondary {
   background-color: #E3A473;
