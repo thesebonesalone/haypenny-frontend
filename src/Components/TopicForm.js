@@ -61,6 +61,7 @@ class TopicForm extends Component {
         .then((topic) => {
           console.log(topic);
           this.props.pushTopic(topic.topic);
+          this.state.title = ""
         });
     }
   }

@@ -321,11 +321,11 @@ class OpinionContainer extends Component {
               {this.state.showOpinions ? "Topics" : "Opinions"}
             </button>
             <button name="new" className="btn btn-secondary" onClick={(e) => this.handleTopicChange(e)}>New</button>
-            <button name="popular" className="btn btn-secondary" onClick={(e) => this.handleTopicChange(e)}>Popular</button>
+            <button name="popular" className="btn btn-secondary" onClick={(e) => this.handleTopicChange(e)}>Trending</button>
             <TopicForm didUpdate={() => this.topicFormDidSubmit()} />
           </form>
           <div className="card-title" style={{ margin: "1%", textAlign: "center" }}>
-            <h3>{"All Topics"}</h3>
+            <h3>{`${this.state.topicFilter === "new" ? "New" : "Trending"} Topics`}</h3>
           </div>
           {this.renderTopics()}
         </div>
