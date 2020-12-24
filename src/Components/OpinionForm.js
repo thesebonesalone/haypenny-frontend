@@ -15,7 +15,6 @@ class OpinionForm extends Component {
     fetch(URLIS + `/opinion/view/${this.props.user.id}/${this.props.topic.id}`)
       .then((resp) => resp.json())
       .then((opinion) => {
-       
         //debugger
         this.setState({
           opinionOwned: opinion.opinion,
@@ -32,12 +31,13 @@ class OpinionForm extends Component {
   }
 
   componentDidUpdate(prevProps) {
-    if (this.props.topic.id !== prevProps.topic.id){
-    if (this.props.user.name !== "") {
-      this.loadUserOpinions();
+    if (this.props.topic.id !== prevProps.topic.id) {
+      if (this.props.user.name !== "") {
+        this.loadUserOpinions();
+      }
+      return null;
     }
-    return null;
-  }}
+  }
   renderLogin() {
     return <div>You must be logged in to leave an Opinion!</div>;
   }
@@ -62,14 +62,14 @@ class OpinionForm extends Component {
       .then((resp) => resp.json())
       .then((message) => {
         console.log(message);
-        let newOpinion = message.opinion
-        newOpinion.topic = this.props.topic.title
-        newOpinion.user = this.props.user.name
-        newOpinion.reactions = []
+        let newOpinion = message.opinion;
+        newOpinion.topic = this.props.topic.title;
+        newOpinion.user = this.props.user.name;
+        newOpinion.reactions = [];
         //debugger
         this.setState({
           opinion: "",
-          opinionOwned: newOpinion
+          opinionOwned: newOpinion,
         });
       });
   };
@@ -85,8 +85,11 @@ class OpinionForm extends Component {
         <React.Fragment>
           <h5>Your Opinion</h5>
           <Opinion key={1} offset={0.25} opinion={this.state.opinionOwned} />
-          {(Date.now().valueOf() - Date.parse(this.state.opinionOwned.created_at)) > 172800000 ? this.renderForm("Has your opinion changed?") : "You must wait to change your opinion."}
-          
+          {Date.now().valueOf() -
+            Date.parse(this.state.opinionOwned.created_at) >
+          172800000
+            ? this.renderForm("Has your opinion changed?")
+            : "You must wait to change your opinion."}
         </React.Fragment>
       );
     } else {
@@ -95,15 +98,16 @@ class OpinionForm extends Component {
   }
   renderForm(message) {
     return (
-      <div>
+      <div className="card" style={{ margin: "1%", width: "98%" }}>
         <form onSubmit={(e) => this.handleSubmit(e)}>
           <div>
-            <h5>
+            <h5 style={{ margin: "1%", width: "95%" }}>
               {this.state.opinion.length >= 256
                 ? "Opinion must be 256 characters or less!"
                 : `${256 - this.state.opinion.length} characters left!`}
             </h5>
             <input
+              style={{ margin: "1%", width: "98%" }}
               type="text"
               className="input-group input-group-lg"
               placeholder={message}

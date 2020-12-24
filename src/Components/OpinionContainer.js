@@ -21,7 +21,7 @@ class OpinionContainer extends Component {
       loadingOpinions: false,
       loadingTopics: false,
       opinionFilter: "new",
-      topicFilter: "new",
+      topicFilter: "popular",
       topicFormUpdate: false,
     };
   }
@@ -194,6 +194,18 @@ class OpinionContainer extends Component {
       this.loadOpinions(name);
     }
   }
+  handleTopicChange(e) {
+    let name = e.target.name;
+    if (name === 'new' || name === 'popular') {
+      this.setState({
+        topicFilter: name,
+        filteredTopics: [],
+        topicPage: 1,
+        lastTopicPage: false,
+      })
+      this.loadTopics(name)
+    }
+  }
   windowScrollListener() {
     if (window.innerHeight + window.scrollY >= document.body.offsetHeight) {
       //debugger
@@ -279,6 +291,14 @@ class OpinionContainer extends Component {
       </React.Fragment>
     );
   }
+
+  handleNewTopics() {
+
+  }
+  handlePopularTopics() {
+
+  }
+
   renderNewTopic() {
     let newTopic = [this.props.topic];
     let oldTopics = this.state.filteredTopics;
@@ -300,8 +320,8 @@ class OpinionContainer extends Component {
             <button className="btn btn-primary" onClick={() => this.swap()}>
               {this.state.showOpinions ? "Topics" : "Opinions"}
             </button>
-            {/* <button className="btn btn-secondary">New</button>
-            <button className="btn btn-secondary">Popular</button> */}
+            <button name="new" className="btn btn-secondary" onClick={(e) => this.handleTopicChange(e)}>New</button>
+            <button name="popular" className="btn btn-secondary" onClick={(e) => this.handleTopicChange(e)}>Popular</button>
             <TopicForm didUpdate={() => this.topicFormDidSubmit()} />
           </form>
           <div className="card-title" style={{ margin: "1%", textAlign: "center" }}>
