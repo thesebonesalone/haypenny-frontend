@@ -18,13 +18,17 @@ class Topic extends Component {
   }
 
   renderOpinionForm() {
-    return <div>{this.props.doUpdate ? null : <OpinionForm topic={this.props.topic} />}</div>;
+    return (
+      <div>
+        {this.props.doUpdate ? null : <OpinionForm topic={this.props.topic} />}
+      </div>
+    );
   }
   componentDidUpdate() {
-    if (this.props.doUpdate === true){
+    if (this.props.doUpdate === true) {
       this.setState({
-        showForm: false
-      })
+        showForm: false,
+      });
     }
   }
 
@@ -33,6 +37,11 @@ class Topic extends Component {
       <div className="card" style={{ margin: "20px" }}>
         <div className="card-body">
           <h4>
+            {this.props.filter === "popular"
+              ? this.props.rank === 1
+                ? `👑 `
+                : ` ${this.props.rank}. `
+              : null}
             <Link
               className="card-title"
               to={`/topic/${this.props.topic.title}`}
@@ -40,6 +49,11 @@ class Topic extends Component {
               {this.props.topic.title}
             </Link>
           </h4>
+          <h5>
+            {this.props.filter === "popular"
+              ? `Trending score of: ${this.props.topic.score}`
+              : null}
+          </h5>
           <div>
             <button
               className="btn btn-primary"

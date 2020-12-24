@@ -106,6 +106,8 @@ class OpinionContainer extends Component {
       count += 1;
       return (
         <Topic
+          filter={this.state.topicFilter}
+          rank={count}
           doUpdate={this.state.topicFormUpdate}
           key={count}
           topic={topic}
