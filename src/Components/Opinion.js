@@ -45,7 +45,6 @@ class Opinion extends Component {
   }
 
   componentDidMount() {
-    console.log(this.state.highlight);
     setTimeout(() => this.changePosition(), 20);
   }
 

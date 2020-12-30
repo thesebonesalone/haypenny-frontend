@@ -71,7 +71,6 @@ function TopicView(props) {
     fetch(URLIS + `/topic/${topicTitle}/opinions/${sort}/${newPage}`)
       .then((resp) => resp.json())
       .then((message) => {
-        console.log(message);
         let newOpinions = [...opinions, ...message.opinions];
         setOpinions(newOpinions);
         setLastPage(message.last);

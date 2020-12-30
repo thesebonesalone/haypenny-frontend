@@ -6,7 +6,7 @@ class NavBar extends Component {
   renderLogin() {
     return (
       <div className="navbar-item float-md-right">
-      <button className="btn-primary" onClick={() => this.props.changePopUp()}>
+      <button className="navbar-item btn btn-primary btn-small" onClick={() => this.props.changePopUp()}>
         Log In
       </button>
       </div>

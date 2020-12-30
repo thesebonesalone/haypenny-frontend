@@ -33,7 +33,6 @@ function OpinionView(props) {
       fetch(URLIS + `/opinion/view/${opinionId}`)
         .then((resp) => resp.json())
         .then((message) => {
-          console.log(message);
           setTitle(message.title);
           setUsername(message.username);
           setOpinion(message.opinion);
@@ -134,7 +133,6 @@ function OpinionView(props) {
   }
 
   function addCommentToStable(comment) {
-      console.log(comment)
     let newUserComments = userComments.concat([comment])
       setUserComments(newUserComments)
   }
