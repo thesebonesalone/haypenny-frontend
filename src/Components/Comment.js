@@ -39,7 +39,8 @@ class Comment extends Component {
     this.state.votes.forEach((vote) => {
       count += vote.value;
     });
-    count -= this.setState({
+    // count -= 
+    this.setState({
       voteTally: count,
     });
   }
@@ -83,7 +84,7 @@ class Comment extends Component {
           this.tallyVotes();
         } else {
           this.setState({
-            voteOffset: value,
+            voteOffset: -value,
           });
         }
       });
@@ -110,6 +111,19 @@ class Comment extends Component {
       </button>
     );
   }
+
+  renderVotes() {
+    return (
+      <div className="col-" style={{ margin: "1%" }}>
+        <div className="react-emoji" onClick={() => this.handleUpvote()}>
+          👍
+        </div>
+        <div className="react-emoji" onClick={() => this.handleDownvote()}>
+          👎
+        </div>
+      </div>
+    );
+  }
   renderComment() {
     return (
       <div className="card">
@@ -122,17 +136,7 @@ class Comment extends Component {
 
         <div className="container-fluid">
           <div className="row" style={{ margin: "1%" }}>
-            <div className="col-" style={{ margin: "1%" }}>
-              <div className="react-emoji" onClick={() => this.handleUpvote()}>
-                👍
-              </div>
-              <div
-                className="react-emoji"
-                onClick={() => this.handleDownvote()}
-              >
-                👎
-              </div>
-            </div>
+            {this.props.user.name !== "" ? this.renderVotes() : null}
             <div
               className="col- "
               style={{ margin: "1%", textAlign: "center" }}
